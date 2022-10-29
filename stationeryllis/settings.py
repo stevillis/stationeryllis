@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import django_heroku
 import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+IS_HEROKU = "DYNO" in os.environ
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +35,8 @@ SECRET_KEY = "django-insecure-cd#ttl(b47hk3h1b*%kraagv8xt_jmjyk-m*^69$sz_!tbm3$_
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if not IS_HEROKU:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ]
 
@@ -120,6 +124,11 @@ DATABASES = {
 }
 
 
+# Enable test database if found in CI environment.
+if "CI" in os.environ:
+    DATABASES["default"]["TEST"] = DATABASES["default"]
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -160,3 +169,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Configure Django App for Heroku.
+django_heroku.settings(locals())
