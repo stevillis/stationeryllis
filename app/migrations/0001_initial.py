@@ -3,6 +3,22 @@
 from django.db import migrations, models
 
 
+def migrate_day_of_the_week(apps, schema_editor):
+    """Create DayOfTheWeek records."""
+    DayOfTheWeek = apps.get_model("app", "DayOfTheWeek")
+
+    days_of_the_week = [
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado",
+        "Domingo",
+        ]
+    for day in days_of_the_week:
+        DayOfTheWeek.objects.create(description=day)
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -30,4 +46,5 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
+        migrations.RunPython(migrate_day_of_the_week),
     ]
