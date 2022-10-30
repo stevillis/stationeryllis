@@ -10,12 +10,7 @@ def migrate_day_of_the_week(apps, schema_editor):
     CommissionParam = apps.get_model("app", "CommissionParam")
 
     for dotw in DayOfTheWeek.objects.all():
-        print(dotw.id, dotw.description)
-        CommissionParam.objects.create(
-            min_percentage=3,
-            max_percentage=5,
-            day_of_the_week=dotw
-        )
+        CommissionParam.objects.create(day_of_the_week=dotw)
 
 
 class Migration(migrations.Migration):
