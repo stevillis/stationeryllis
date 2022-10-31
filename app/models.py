@@ -15,6 +15,9 @@ class DayOfTheWeek(models.Model):
         unique=True
     )
 
+    def __str__(self) -> str:
+        return str(self.description)
+
 
 class CommissionParam(models.Model):
     """CommissionParam Model."""
@@ -39,3 +42,6 @@ class CommissionParam(models.Model):
         verbose_name="Dia da semana",
         on_delete=models.CASCADE,
     )
+
+    def __str__(self) -> str:
+        return str(self.day_of_the_week.description)
