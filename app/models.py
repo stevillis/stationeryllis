@@ -15,6 +15,12 @@ class DayOfTheWeek(models.Model):
         unique=True
     )
 
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Dia da semana"
+        verbose_name_plural = "Dias da semana"
+        ordering = ('id', )
+
     def __str__(self) -> str:
         return str(self.description)
 
@@ -52,6 +58,10 @@ class CommissionParam(models.Model):
     )
 
     class Meta:
+        """Meta definitions."""
+        verbose_name = "Parâmetro de Comissão"
+        verbose_name_plural = "Parâmetros de Comissão"
+        ordering = ('id', )
         constraints = (
             CheckConstraint(
                 check=Q(min_percentage__gte=0.0) & Q(min_percentage__lte=10.0),
