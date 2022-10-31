@@ -33,12 +33,20 @@ Open the downloaded/cloned folder `stationeryllis` (where the file manage.py is 
     $ python manage.py migrate
     ```
 
-3. Load database table data for days of the week
+3. Create a superuser to access Django Admin
+
     ```shell
-    $ python manage.py loaddata day_of_the_week.json
+    $ python manage.py createsuperuser
     ```
+
 4. Start the local Django server
+
     ```shell
     $ python manage.py runserver
     ```
+
     and access the http://127.0.0.1:8000/
+
+5. Django Admin
+
+    To access Django Admin module, you must visit http://127.0.0.1:8000/admin and use the credentials you created in the previous steps.
