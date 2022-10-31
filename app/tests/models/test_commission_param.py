@@ -1,19 +1,21 @@
 """DayOfTheWeek tests module."""
 
 
+from decimal import Decimal
+
 from app.models import CommissionParam, DayOfTheWeek
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
-from django.test import TestCase
+from django.test import TransactionTestCase
 from mixer.backend.django import mixer
 
 
-class CommissionParamTestCase(TestCase):
+class CommissionParamTestCase(TransactionTestCase):
     """CommissionParam TestCase"""
 
     def setUp(self) -> None:
-        self.valid_min_percentage = 2.75
-        self.valid_max_percentage = 15.5
+        self.valid_min_percentage = Decimal(2.75)
+        self.valid_max_percentage = Decimal(9.89)
 
     def test_create_model_with_valid_data(self):
         """Create model with valid data should work as expected."""
@@ -46,24 +48,56 @@ class CommissionParamTestCase(TestCase):
         """
         Create model with invalid percentage should raise ValidationError.
         """
-        day_of_the_week = mixer.blend(
-            DayOfTheWeek,
-            description="Friday"
-        )
+        with self.subTest("Invalid type of data for percentage values should raise exception."):
+            day_of_the_week = mixer.blend(
+                DayOfTheWeek,
+                description="Friday"
+            )
+            invalid_data = [
+                'abc',
+                {"invalid": "data"},
+                [1, 1, 3, 5, 8],
+                {2, 4, 6}
+            ]
 
-        invalid_data = [
-            'abc',
-            {"invalid": "data"},
-            [1, 1, 3, 5, 8],
-            {2, 4, 6}
-        ]
+            for invalid_percentage in invalid_data:
+                with self.assertRaises(ValidationError):
+                    mixer.blend(
+                        CommissionParam,
+                        min_percentage=invalid_percentage,
+                        max_percentage=invalid_percentage,
+                        day_of_the_week=day_of_the_week
+                    )
 
-        for invalid_percentage in invalid_data:
-            with self.assertRaises(ValidationError):
+        with self.subTest("Invalid range for min_percentage field should raise exception."):
+            invalid_min_percentage_range = Decimal(-1)
+
+            day_of_the_week = mixer.blend(
+                DayOfTheWeek,
+                description="Monday"
+            )
+
+            with self.assertRaises(IntegrityError):
                 mixer.blend(
                     CommissionParam,
-                    min_percentage=invalid_percentage,
-                    max_percentage=invalid_percentage,
+                    min_percentage=invalid_min_percentage_range,
+                    max_percentage=self.valid_max_percentage,
+                    day_of_the_week=day_of_the_week
+                )
+
+        with self.subTest("Invalid range for max_percentage field should raise exception."):
+            invalid_max_percentage_range = Decimal(11)
+
+            day_of_the_week = mixer.blend(
+                DayOfTheWeek,
+                description="Tuesday"
+            )
+
+            with self.assertRaises(IntegrityError):
+                mixer.blend(
+                    CommissionParam,
+                    min_percentage=self.valid_min_percentage,
+                    max_percentage=invalid_max_percentage_range,
                     day_of_the_week=day_of_the_week
                 )
 
