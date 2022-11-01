@@ -75,3 +75,34 @@ class CommissionParam(models.Model):
 
     def __str__(self) -> str:
         return str(self.day_of_the_week.description)
+
+
+class Customer(models.Model):
+    """Customer Model."""
+    name = models.CharField(
+        verbose_name="Nome",
+        max_length=100,
+        null=False,
+        blank=False
+    )
+    email = models.EmailField(
+        verbose_name="E-mail",
+        null=False,
+        blank=False,
+        unique=True
+    )
+    phone = models.CharField(
+        verbose_name="Telefone",
+        max_length=100,
+        null=False,
+        blank=False
+    )
+
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Cliente"
+        verbose_name_plural = "Clientes"
+        ordering = ('id', )
+
+    def __str__(self) -> str:
+        return str(self.name)
