@@ -106,3 +106,34 @@ class Customer(models.Model):
 
     def __str__(self) -> str:
         return str(self.name)
+
+
+class Seller(models.Model):
+    """Seller Model."""
+    name = models.CharField(
+        verbose_name="Nome",
+        max_length=100,
+        null=False,
+        blank=False
+    )
+    email = models.EmailField(
+        verbose_name="E-mail",
+        null=False,
+        blank=False,
+        unique=True
+    )
+    phone = models.CharField(
+        verbose_name="Telefone",
+        max_length=100,
+        null=False,
+        blank=False
+    )
+
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Vendedor"
+        verbose_name_plural = "Vendedores"
+        ordering = ('id', )
+
+    def __str__(self) -> str:
+        return str(self.name)
