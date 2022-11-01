@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from app.models import CommissionParam, Customer
+from app.models import CommissionParam, Customer, Seller
 
 
 @admin.register(CommissionParam)
@@ -17,6 +17,14 @@ class CommissionParamAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     """Customer Model definitions for Django Admin."""
+    fields = ["name", "email", "phone"]
+    list_display = ["name", "email", "phone"]
+    search_fields = ["name", "email", "phone"]
+
+
+@admin.register(Seller)
+class SellerAdmin(admin.ModelAdmin):
+    """Seller Model definitions for Django Admin."""
     fields = ["name", "email", "phone"]
     list_display = ["name", "email", "phone"]
     search_fields = ["name", "email", "phone"]
