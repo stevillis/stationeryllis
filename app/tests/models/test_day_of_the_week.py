@@ -44,3 +44,9 @@ class DayOfTheWeekTestCase(TestCase):
                 DayOfTheWeek,
                 description="Sunday"
             )
+
+    def test_str_method(self):
+        """Test str method of Model."""
+        dotw = mixer.blend(DayOfTheWeek, description="Thursday")
+        self.assertEqual(str(dotw), "Thursday")
+
