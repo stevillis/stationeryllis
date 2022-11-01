@@ -125,3 +125,18 @@ class CommissionParamTestCase(TransactionTestCase):
                 max_percentage=self.valid_max_percentage,
                 day_of_the_week=day_of_the_week
             )
+
+    def test_str_method(self):
+        """Test str method of Model."""
+        day_of_the_week = mixer.blend(
+            DayOfTheWeek,
+            description="Wednesday"
+        )
+
+        commission_param = mixer.blend(
+            CommissionParam,
+            min_percentage=self.valid_min_percentage,
+            max_percentage=self.valid_max_percentage,
+            day_of_the_week=day_of_the_week
+        )
+        self.assertEqual(str(commission_param), "Wednesday")

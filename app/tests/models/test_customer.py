@@ -52,3 +52,8 @@ class CustomerTestCase(TransactionTestCase):
                     email="another_email@bol.com",
                     phone=None
                 )
+
+    def test_str_method(self):
+        """Test str method of Model."""
+        customer = mixer.blend(Customer, name="Karen")
+        self.assertEqual(str(customer), "Karen")
