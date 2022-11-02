@@ -46,7 +46,19 @@ Run tests with coverage
 coverage run --source='.' manage.py test app --keepdb
 ```
 
-Access report
+Generate report
+
+```shell
+coverage report
+```
+
+Generate html report
+
+```shell
+coverage html
+```
+
+Access html report
 
 ```shell
 python -m http.server 8080
