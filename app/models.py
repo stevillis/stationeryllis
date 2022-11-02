@@ -137,3 +137,54 @@ class Seller(models.Model):
 
     def __str__(self) -> str:
         return str(self.name)
+
+
+class Product(models.Model):
+    """Product Model."""
+    description = models.CharField(
+        verbose_name="Descrição",
+        max_length=100,
+        null=False,
+        blank=False
+    )
+    unit_price = models.DecimalField(
+        verbose_name="Valor unitário",
+        max_digits=9,
+        decimal_places=2,
+        null=False,
+        blank=False,
+        default=3,
+        validators=[
+            MinValueValidator(0.0),
+        ]
+    )
+    commission_percentage = models.DecimalField(
+        verbose_name="Percentual de comissão",
+        max_digits=5,
+        decimal_places=2,
+        null=False,
+        blank=False,
+        default=3,
+        validators=[
+            MinValueValidator(0.0),
+        ]
+    )
+
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Produto"
+        verbose_name_plural = "Produtos"
+        ordering = ('id', )
+        constraints = (
+            CheckConstraint(
+                check=Q(unit_price__gte=0.0),
+                name='%(app_label)s_%(class)s_min_unit_price'
+            ),
+            CheckConstraint(
+                check=Q(commission_percentage__gte=0.0),
+                name='%(app_label)s_%(class)s_min_commission_percentage'
+            ),
+        )
+
+    def __str__(self) -> str:
+        return str(self.description)
