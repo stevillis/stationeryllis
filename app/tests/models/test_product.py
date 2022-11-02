@@ -74,5 +74,10 @@ class ProductTestCase(TransactionTestCase):
 
     def test_str_method(self):
         """Test str method of Model."""
-        product = mixer.blend(Product, description="Batata Frita")
+        product = mixer.blend(
+            Product,
+            description="Batata Frita",
+            unit_price=4.45,
+            commission_percentage=1
+        )
         self.assertEqual(str(product), "Batata Frita")

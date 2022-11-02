@@ -153,7 +153,6 @@ class Product(models.Model):
         decimal_places=2,
         null=False,
         blank=False,
-        default=3,
         validators=[
             MinValueValidator(0.0),
         ]
@@ -164,7 +163,6 @@ class Product(models.Model):
         decimal_places=2,
         null=False,
         blank=False,
-        default=3,
         validators=[
             MinValueValidator(0.0),
         ]
