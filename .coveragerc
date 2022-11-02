@@ -1,7 +1,17 @@
 [run]
-branch = true
-omit = */tests/*, */migrations/*, */urls.py, */settings/*, */wsgi.py, manage.py, fabfile.py
 source = .
+
+omit =
+    */__init__.py
+    */manage.py
+    */asgi.py
+    */settings.py
+    */urls.py
+    */wsgi.py
+    */migrations/*
+    */tests/*
+    */admin.py
+    */apps.py
 
 [report]
 show_missing = true
