@@ -1,0 +1,51 @@
+[
+    {
+        "model": "app.dayoftheweek",
+        "pk": 1,
+        "fields": {
+            "description": "Domingo"
+        }
+    },
+    {
+        "model": "app.dayoftheweek",
+        "pk": 2,
+        "fields": {
+            "description": "Segunda-feira"
+        }
+    },
+    {
+        "model": "app.dayoftheweek",
+        "pk": 3,
+        "fields": {
+            "description": "Terça-feira"
+        }
+    },
+    {
+        "model": "app.dayoftheweek",
+        "pk": 4,
+        "fields": {
+            "description": "Quarta-feira"
+        }
+    },
+    {
+        "model": "app.dayoftheweek",
+        "pk": 5,
+        "fields": {
+            "description": "Quinta-feira"
+        }
+    },
+    {
+        "model": "app.dayoftheweek",
+        "pk": 6,
+        "fields": {
+            "description": "Sexta-feira"
+        }
+    },
+    {
+        "model": "app.dayoftheweek",
+        "pk": 7,
+        "fields": {
+            "description": "Sábado"
+        }
+    }
+]
