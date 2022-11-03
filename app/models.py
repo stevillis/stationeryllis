@@ -186,3 +186,74 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return str(self.description)
+
+
+class ProductItem(models.Model):
+    """ProductItem Model."""
+    product = models.ForeignKey(
+        verbose_name="Produto",
+        to=Product,
+        on_delete=models.CASCADE
+    )
+    quantity = models.IntegerField(
+        verbose_name="Quantidade",
+        null=False,
+        blank=False,
+        validators=[
+            MinValueValidator(1),
+        ]
+    )
+
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Item de Venda"
+        verbose_name_plural = "Itens de Venda"
+        ordering = ('id', )
+        constraints = (
+            CheckConstraint(
+                check=Q(quantity__gte=1),
+                name='%(app_label)s_%(class)s_min_quantity'
+            ),
+        )
+
+    def __str__(self) -> str:
+        return f'<ProductItem product #{self.product.id}, quantity={self.quantity}>'  # pylint: disable=no-member
+
+
+class Order(models.Model):
+    """Order Model."""
+    datetime = models.DateTimeField(
+        verbose_name="Data/hora",
+        null=False,
+        blank=False
+    )
+    invoice_number = models.CharField(
+        verbose_name="Número da nota fiscal",
+        max_length=8,
+        null=False,
+        blank=False,
+        unique=True
+    )
+    customer = models.ForeignKey(
+        verbose_name="Cliente",
+        to=Customer,
+        on_delete=models.CASCADE
+    )
+    seller = models.ForeignKey(
+        verbose_name="Vendedor",
+        to=Seller,
+        on_delete=models.CASCADE
+    )
+    items = models.ManyToManyField(
+        verbose_name="Itens de Venda",
+        to=ProductItem
+    )
+
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Venda"
+        verbose_name_plural = "Vendas"
+        ordering = ('id', )
+
+    def __str__(self) -> str:
+        return str(self.invoice_number)

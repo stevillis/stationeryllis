@@ -3,11 +3,12 @@
 
 from decimal import Decimal
 
-from app.models import CommissionParam, DayOfTheWeek
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.test import TransactionTestCase
 from mixer.backend.django import mixer
+
+from app.models import CommissionParam, DayOfTheWeek
 
 
 class CommissionParamTestCase(TransactionTestCase):
