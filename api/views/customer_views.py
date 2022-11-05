@@ -28,7 +28,7 @@ class CustomerList(APIView):
                 email=serializer.validated_data["email"],
                 phone=serializer.validated_data["phone"]
             )
-            _ = customer_service.create_customer(new_customer)
+            customer_service.create_customer(new_customer)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -44,3 +44,20 @@ class CustomerDetail(APIView):
         serializer = CustomerSerializer(customer)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk, format=None):
+        """Update Customer data View"""
+        old_customer = customer_service.get_customer_by_pk(pk)
+        serializer = CustomerSerializer(
+            instance=old_customer, data=request.data)
+        if serializer.is_valid():
+            new_customer = CustomerEntity(
+                name=serializer.validated_data["name"],
+                email=serializer.validated_data["email"],
+                phone=serializer.validated_data["phone"]
+            )
+            customer_service.update_customer(old_customer, new_customer)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -155,3 +155,137 @@ class CustomerViewsTestCase(APITestCase):
         self.assertEqual(data["name"], "Danger Bob")
         self.assertEqual(data["email"], "danger_bob@gmail.com")
         self.assertEqual(data["phone"], "+1 415-387-3054")
+
+    def test_get_non_existing_customer_by_pk(self):
+        """Get a non existing Customer should return HTTP Not Found status code"""
+        non_existing_customer_endpoint = reverse(
+            viewname="customers-detail",
+            kwargs={"pk": 99999999}
+        )
+
+        response = self.client.get(non_existing_customer_endpoint)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_customer_with_valid_data(self):
+        """Test update Customer endpoint with valid data"""
+        customer = mixer.blend(
+            Customer,
+            name="Bafabon",
+            email="bafabon@gmail.com",
+            phone="99 99654-8521"
+        )
+        customers_detail_endpoint = reverse(
+            viewname="customers-detail",
+            kwargs={"pk": customer.pk}
+        )
+        customer_updated_data = {
+            "name": "Linda",
+            "email": "linda@gmail.com",
+            "phone": "99 99654-8521"
+        }
+
+        response = self.client.put(
+            path=customers_detail_endpoint,
+            data=customer_updated_data
+        )
+        data = response.data
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(data["name"], "Linda")
+        self.assertEqual(data["email"], "linda@gmail.com")
+        self.assertEqual(data["phone"], "99 99654-8521")
+
+    def test_update_customer_with_invalid_data(self):
+        """Update Customer with invalid data should return HTTP Bad Request status code"""
+        customer = mixer.blend(
+            Customer,
+            name="Colonel",
+            email="colonel@gmail.com",
+            phone="11 3624-2400"
+        )
+        customers_detail_endpoint = reverse(
+            viewname="customers-detail",
+            kwargs={"pk": customer.pk}
+        )
+
+        with self.subTest("Update Customer with empty name"):
+            customer_updated_data_with_empty_name = {
+                "name": "",
+                "email": "linda@gmail.com",
+                "phone": "99 99654-8521"
+            }
+            response = self.client.put(
+                path=customers_detail_endpoint,
+                data=customer_updated_data_with_empty_name
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertIn("name", response.data.keys())
+
+        with self.subTest("Update Customer with empty email"):
+            customer_updated_data_with_empty_email = {
+                "name": "Linda",
+                "email": "",
+                "phone": "99 99654-8521"
+            }
+            response = self.client.put(
+                path=customers_detail_endpoint,
+                data=customer_updated_data_with_empty_email
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertIn("email", response.data.keys())
+
+        with self.subTest("Create Customer with empty phone"):
+            customer_updated_data_with_empty_phone = {
+                "name": "Linda",
+                "email": "linda@gmail.com",
+                "phone": ""
+            }
+            response = self.client.put(
+                path=customers_detail_endpoint,
+                data=customer_updated_data_with_empty_phone
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertIn("phone", response.data.keys())
+
+        with self.subTest("Update Customer with duplicated email"):
+            mixer.blend(
+                Customer,
+                name="Nyang",
+                email="nyang@gmail.com",
+                phone="123"
+            )
+            customer_updated_data_with_duplicated_email = {
+                "name": "Linda",
+                "email": "nyang@gmail.com",
+                "phone": "99 99654-8521"
+            }
+            response = self.client.put(
+                path=customers_detail_endpoint,
+                data=customer_updated_data_with_duplicated_email
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.assertIn("email", response.data.keys())
+
+    def test_update_non_existing_customer(self):
+        """Update a non existing Customer should return HTTP Not Found status code"""
+        non_existing_customer_endpoint = reverse(
+            viewname="customers-detail",
+            kwargs={"pk": 99999999}
+        )
+        customer_data = {
+            "name": "Lorem",
+            "email": "ipsum@gmail.com",
+            "phone": "123456"
+        }
+
+        response = self.client.put(
+            path=non_existing_customer_endpoint,
+            data=customer_data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
