@@ -1,10 +1,11 @@
 """DayOfTheWeek tests module."""
 
 
-from app.models import DayOfTheWeek
 from django.db.utils import DataError, IntegrityError
 from django.test import TestCase
 from mixer.backend.django import mixer
+
+from app.models import DayOfTheWeek
 
 
 class DayOfTheWeekTestCase(TestCase):
@@ -49,4 +50,3 @@ class DayOfTheWeekTestCase(TestCase):
         """Test str method of Model."""
         dotw = mixer.blend(DayOfTheWeek, description="Thursday")
         self.assertEqual(str(dotw), "Thursday")
-
