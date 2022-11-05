@@ -10,4 +10,4 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta definitions"""
         model = Customer
-        fields = ('name', 'email', 'phone')
+        fields = ("id", "name", "email", "phone")
