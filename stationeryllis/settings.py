@@ -63,10 +63,11 @@ INSTALLED_APPS_DJANGO = [
 
 INSTALLED_APPS_ROOT = [
     'app',
+    'api',
 ]
 
 INSTALLED_APPS_3RD_PARTY = [
-
+    'rest_framework',
 ]
 
 INSTALLED_APPS_3RD_PARTY_BEFORE_DJANGO_APPS = [

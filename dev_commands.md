@@ -46,6 +46,12 @@ Run tests with coverage
 coverage run --source='.' manage.py test app --keepdb
 ```
 
+Run specific test module with coverage
+
+```shell
+coverage run --source='.' manage.py test api.tests.serializers.test_seller_serializer --keepdb
+```
+
 Generate report
 
 ```shell
