@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from api.entities.customer_entity import CustomerEntity
 from api.serializers.customer_serializer import CustomerSerializer
-from api.services.customer_service import create_customer, get_all_customers
+from api.services import customer_service
 
 
 class CustomerList(APIView):
@@ -14,7 +14,7 @@ class CustomerList(APIView):
 
     def get(self, request, format=None):
         """Get all Customers View"""
-        customers = get_all_customers()
+        customers = customer_service.get_all_customers()
         serializer = CustomerSerializer(instance=customers, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -28,8 +28,19 @@ class CustomerList(APIView):
                 email=serializer.validated_data["email"],
                 phone=serializer.validated_data["phone"]
             )
-            _ = create_customer(new_customer)
+            _ = customer_service.create_customer(new_customer)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomerDetail(APIView):
+    """Parameter dependent Views"""
+
+    def get(self, request, pk, format=None):
+        """Get a Customer by pk View"""
+        customer = customer_service.get_customer_by_pk(pk)
+        serializer = CustomerSerializer(customer)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

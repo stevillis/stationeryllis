@@ -1,5 +1,7 @@
 """Customer service module"""
 
+from django.shortcuts import get_object_or_404
+
 from app.models import Customer
 
 
@@ -15,3 +17,8 @@ def create_customer(customer):
         email=customer.email,
         phone=customer.phone
     )
+
+
+def get_customer_by_pk(pk):  # pylint: disable=invalid-name
+    """Get a Customer by pk"""
+    return get_object_or_404(Customer, pk=pk)

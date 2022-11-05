@@ -13,7 +13,7 @@ class CustomerViewsTestCase(APITestCase):
 
     def setUp(self) -> None:
         """Common data definitions"""
-        self.customers_endpoint = reverse('customers')
+        self.customers_list_endpoint = reverse("customers-list")
 
     def test_get_all_customers(self):
         """Get all customers endpoint should work as expected"""
@@ -24,7 +24,7 @@ class CustomerViewsTestCase(APITestCase):
             phone="+1 415-387-3030"
         )
 
-        response = self.client.get(path=self.customers_endpoint)
+        response = self.client.get(path=self.customers_list_endpoint)
         data = response.data[0]
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -42,7 +42,7 @@ class CustomerViewsTestCase(APITestCase):
         }
 
         response = self.client.post(
-            path=self.customers_endpoint,
+            path=self.customers_list_endpoint,
             data=sample_customer_with_valid_data
         )
         data = response.data
@@ -62,7 +62,7 @@ class CustomerViewsTestCase(APITestCase):
                 "phone": "19 3615-1573"
             }
             response = self.client.post(
-                path=self.customers_endpoint,
+                path=self.customers_list_endpoint,
                 data=sample_customer_with_invalid_name
             )
 
@@ -76,7 +76,7 @@ class CustomerViewsTestCase(APITestCase):
                 "phone": "19 3615-1573"
             }
             response = self.client.post(
-                path=self.customers_endpoint,
+                path=self.customers_list_endpoint,
                 data=sample_customer_with_invalid_name
             )
 
@@ -90,7 +90,7 @@ class CustomerViewsTestCase(APITestCase):
                 "phone": "19 3615-1573"
             }
             response = self.client.post(
-                path=self.customers_endpoint,
+                path=self.customers_list_endpoint,
                 data=sample_customer_with_invalid_name
             )
 
@@ -104,7 +104,7 @@ class CustomerViewsTestCase(APITestCase):
                 "phone": ""
             }
             response = self.client.post(
-                path=self.customers_endpoint,
+                path=self.customers_list_endpoint,
                 data=sample_customer_with_invalid_name
             )
 
@@ -124,13 +124,34 @@ class CustomerViewsTestCase(APITestCase):
             }
 
             self.client.post(
-                path=self.customers_endpoint,
+                path=self.customers_list_endpoint,
                 data=sample_customer
             )
             response = self.client.post(
-                path=self.customers_endpoint,
+                path=self.customers_list_endpoint,
                 data=sample_customer_with_duplicated_email
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertIn("email", response.data.keys())
+
+    def test_get_customer_by_pk(self):
+        """Test get Customer by pk endpoint"""
+        new_customer = mixer.blend(
+            Customer,
+            name="Danger Bob",
+            email="danger_bob@gmail.com",
+            phone="+1 415-387-3054"
+        )
+        customers_detail_endpoint = reverse(
+            viewname="customers-detail",
+            kwargs={"pk": new_customer.pk}
+        )
+
+        response = self.client.get(customers_detail_endpoint)
+        data = response.data
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(data["name"], "Danger Bob")
+        self.assertEqual(data["email"], "danger_bob@gmail.com")
+        self.assertEqual(data["phone"], "+1 415-387-3054")
