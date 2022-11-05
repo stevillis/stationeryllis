@@ -61,3 +61,9 @@ class CustomerDetail(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        """Delete Customer data View"""
+        customer = customer_service.get_customer_by_pk(pk)
+        customer_service.delete_customer(customer)
+        return Response(status=status.HTTP_204_NO_CONTENT)

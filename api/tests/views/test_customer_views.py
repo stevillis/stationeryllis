@@ -289,3 +289,26 @@ class CustomerViewsTestCase(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_customer(self):
+        """Test delete Customer endpoint"""
+        customer = mixer.blend(
+            Customer,
+            name="Jane Foster",
+            email="fosterjane@gmail.com",
+            phone="1"
+        )
+        customers_detail_endpoint = reverse(
+            viewname="customers-detail",
+            kwargs={"pk": customer.pk}
+        )
+
+        with self.subTest("Delete existing Customer should return HTTP No Content status code"):
+            response = self.client.delete(customers_detail_endpoint)
+
+            self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        with self.subTest("Delete non existing Customer should return HTTP Not Found status code"):
+            response = self.client.delete(customers_detail_endpoint)
+
+            self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

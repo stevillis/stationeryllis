@@ -35,3 +35,8 @@ def update_customer(old_customer: CustomerEntity, new_customer: CustomerEntity) 
     old_customer.email = new_customer.email
     old_customer.phone = new_customer.phone
     old_customer.save(force_update=True)
+
+
+def delete_customer(customer: Customer) -> None:
+    """Delete Customer from the database"""
+    customer.delete()
