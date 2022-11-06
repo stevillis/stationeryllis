@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.entities.product_entity import ProductEntity
 from api.serializers.product_serializer import ProductSerializer
 from api.services import product_service
 
@@ -23,12 +22,7 @@ class ProductList(APIView):
         """Create a Product View"""
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
-            new_product = ProductEntity(
-                description=serializer.validated_data["description"],
-                unit_price=serializer.validated_data["unit_price"],
-                commission_percentage=serializer.validated_data["commission_percentage"]
-            )
-            product_service.create_product(new_product)
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -49,14 +43,11 @@ class ProductDetail(APIView):
         """Update Product data View"""
         old_product = product_service.get_product_by_pk(pk)
         serializer = ProductSerializer(
-            instance=old_product, data=request.data)
+            instance=old_product,
+            data=request.data
+        )
         if serializer.is_valid():
-            new_product = ProductEntity(
-                description=serializer.validated_data["description"],
-                unit_price=serializer.validated_data["unit_price"],
-                commission_percentage=serializer.validated_data["commission_percentage"]
-            )
-            product_service.update_product(old_product, new_product)
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 

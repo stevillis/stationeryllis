@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.entities.customer_entity import CustomerEntity
 from api.serializers.customer_serializer import CustomerSerializer
 from api.services import customer_service
 
@@ -23,12 +22,7 @@ class CustomerList(APIView):
         """Create a Customer View"""
         serializer = CustomerSerializer(data=request.data)
         if serializer.is_valid():
-            new_customer = CustomerEntity(
-                name=serializer.validated_data["name"],
-                email=serializer.validated_data["email"],
-                phone=serializer.validated_data["phone"]
-            )
-            customer_service.create_customer(new_customer)
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -49,14 +43,11 @@ class CustomerDetail(APIView):
         """Update Customer data View"""
         old_customer = customer_service.get_customer_by_pk(pk)
         serializer = CustomerSerializer(
-            instance=old_customer, data=request.data)
+            instance=old_customer,
+            data=request.data
+        )
         if serializer.is_valid():
-            new_customer = CustomerEntity(
-                name=serializer.validated_data["name"],
-                email=serializer.validated_data["email"],
-                phone=serializer.validated_data["phone"]
-            )
-            customer_service.update_customer(old_customer, new_customer)
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 

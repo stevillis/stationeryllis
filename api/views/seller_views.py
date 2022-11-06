@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.entities.seller_entity import SellerEntity
 from api.serializers.seller_serializer import SellerSerializer
 from api.services import seller_service
 
@@ -23,12 +22,7 @@ class SellerList(APIView):
         """Create a Seller View"""
         serializer = SellerSerializer(data=request.data)
         if serializer.is_valid():
-            new_seller = SellerEntity(
-                name=serializer.validated_data["name"],
-                email=serializer.validated_data["email"],
-                phone=serializer.validated_data["phone"]
-            )
-            seller_service.create_seller(new_seller)
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -49,14 +43,11 @@ class SellerDetail(APIView):
         """Update Seller data View"""
         old_seller = seller_service.get_seller_by_pk(pk)
         serializer = SellerSerializer(
-            instance=old_seller, data=request.data)
+            instance=old_seller,
+            data=request.data
+        )
         if serializer.is_valid():
-            new_seller = SellerEntity(
-                name=serializer.validated_data["name"],
-                email=serializer.validated_data["email"],
-                phone=serializer.validated_data["phone"]
-            )
-            seller_service.update_seller(old_seller, new_seller)
+            serializer.save()
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 
