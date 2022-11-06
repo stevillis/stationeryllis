@@ -3,6 +3,7 @@
 from django.urls import path
 
 from api.views.customer_views import CustomerDetail, CustomerList
+from api.views.product_views import ProductDetail, ProductList
 from api.views.seller_views import SellerDetail, SellerList
 
 urlpatterns = [
@@ -11,4 +12,7 @@ urlpatterns = [
 
     path("sellers/", SellerList.as_view(), name="sellers-list"),
     path("sellers/<int:pk>", SellerDetail.as_view(), name="sellers-detail"),
+
+    path("products/", ProductList.as_view(), name="products-list"),
+    path("products/<int:pk>", ProductDetail.as_view(), name="products-detail"),
 ]

@@ -34,7 +34,7 @@ class SellerViewsTestCase(APITestCase):
         self.assertEqual(data["phone"], "+1 415-387-3030")
 
     def test_create_seller_with_valid_data(self):
-        """Create Seller with valid data should HTTP Created status code"""
+        """Create Seller with valid data should return HTTP Created status code"""
         sample_seller_with_valid_data = {
             "name": "Kamila Leal",
             "email": "kamileal@gmail.com",

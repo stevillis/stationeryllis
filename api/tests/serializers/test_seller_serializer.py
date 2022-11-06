@@ -13,9 +13,9 @@ class SellerSerializerTestCase(TestCase):
     def setUp(self) -> None:
         """Set up common used values."""
         self.seller_attributes = {
-            'name': 'John Kent',
-            'email': 'johnkent@gmail.com',
-            'phone': '+1 415-387-2249'
+            "name": 'John Kent',
+            "email": 'johnkent@gmail.com',
+            "phone": '+1 415-387-2249'
         }
 
         self.seller = Seller.objects.create(  # pylint: disable=no-member
@@ -50,9 +50,9 @@ class SellerSerializerTestCase(TestCase):
     def test_invalid_data(self):
         """Test invalid data."""
         serializer_data = {
-            'name': 'Mary Wayne',
-            'email': 'marywayne@gmail.com',
-            'phone': '0800 720 5356'
+            "name": 'Mary Wayne',
+            "email": 'marywayne@gmail.com',
+            "phone": '0800 720 5356'
         }
         with self.subTest("Test name field content with invalid data."):
             data = serializer_data.copy()
@@ -63,12 +63,12 @@ class SellerSerializerTestCase(TestCase):
             ]
 
             for invalid_name in invalid_names:
-                data['name'] = invalid_name
+                data["name"] = invalid_name
 
                 serializer = SellerSerializer(data=data)
 
                 self.assertFalse(serializer.is_valid())
-                self.assertCountEqual(serializer.errors, ['name'])
+                self.assertCountEqual(serializer.errors, ["name"])
 
         with self.subTest("Test email field content with invalid data."):
             data = serializer_data.copy()
@@ -79,7 +79,7 @@ class SellerSerializerTestCase(TestCase):
             ]
 
             for invalid_email in invalid_emails:
-                data['email'] = invalid_email
+                data["email"] = invalid_email
 
                 serializer = SellerSerializer(data=data)
 
@@ -95,9 +95,9 @@ class SellerSerializerTestCase(TestCase):
             ]
 
             for invalid_phone in invalid_phones:
-                data['phone'] = invalid_phone
+                data["phone"] = invalid_phone
 
                 serializer = SellerSerializer(data=data)
 
                 self.assertFalse(serializer.is_valid())
-                self.assertCountEqual(serializer.errors, ['phone'])
+                self.assertCountEqual(serializer.errors, ["phone"])

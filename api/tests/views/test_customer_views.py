@@ -34,7 +34,7 @@ class CustomerViewsTestCase(APITestCase):
         self.assertEqual(data["phone"], "+1 415-387-3030")
 
     def test_create_customer_with_valid_data(self):
-        """Create Customer with valid data should HTTP Created status code"""
+        """Create Customer with valid data should return HTTP Created status code"""
         sample_customer_with_valid_data = {
             "name": "Kamila Leal",
             "email": "kamileal@gmail.com",
