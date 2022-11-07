@@ -188,8 +188,48 @@ class Product(models.Model):
         return str(self.description)
 
 
-class ProductItem(models.Model):
-    """ProductItem Model."""
+class Order(models.Model):
+    """Order Model."""
+    datetime = models.DateTimeField(
+        verbose_name="Data/hora",
+        null=False,
+        blank=False
+    )
+    invoice_number = models.CharField(
+        verbose_name="Número da nota fiscal",
+        max_length=8,
+        null=False,
+        blank=False,
+        unique=True
+    )
+    customer = models.ForeignKey(
+        verbose_name="Cliente",
+        to=Customer,
+        on_delete=models.CASCADE
+    )
+    seller = models.ForeignKey(
+        verbose_name="Vendedor",
+        to=Seller,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        """Meta definitions."""
+        verbose_name = "Venda"
+        verbose_name_plural = "Vendas"
+        ordering = ('id', )
+
+    def __str__(self) -> str:
+        return str(self.invoice_number)
+
+
+class OrderItem(models.Model):
+    """OrderItem Model."""
+    order = models.ForeignKey(
+        verbose_name="Venda",
+        to=Order,
+        on_delete=models.CASCADE
+    )
     product = models.ForeignKey(
         verbose_name="Produto",
         to=Product,
@@ -217,43 +257,7 @@ class ProductItem(models.Model):
         )
 
     def __str__(self) -> str:
-        return f'<ProductItem product #{self.product.id}, quantity={self.quantity}>'  # pylint: disable=no-member
-
-
-class Order(models.Model):
-    """Order Model."""
-    datetime = models.DateTimeField(
-        verbose_name="Data/hora",
-        null=False,
-        blank=False
-    )
-    invoice_number = models.CharField(
-        verbose_name="Número da nota fiscal",
-        max_length=8,
-        null=False,
-        blank=False,
-        unique=True
-    )
-    customer = models.ForeignKey(
-        verbose_name="Cliente",
-        to=Customer,
-        on_delete=models.CASCADE
-    )
-    seller = models.ForeignKey(
-        verbose_name="Vendedor",
-        to=Seller,
-        on_delete=models.CASCADE
-    )
-    items = models.ManyToManyField(
-        verbose_name="Itens de Venda",
-        to=ProductItem
-    )
-
-    class Meta:
-        """Meta definitions."""
-        verbose_name = "Venda"
-        verbose_name_plural = "Vendas"
-        ordering = ('id', )
-
-    def __str__(self) -> str:
-        return str(self.invoice_number)
+        return (
+            f"<OrderItem order #{self.order.id}, product #{self.product.id}, " # pylint: disable=no-member
+            f"quantity={self.quantity}>"  # pylint: disable=no-member
+        )

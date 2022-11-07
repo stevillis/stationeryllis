@@ -1,5 +1,6 @@
 [run]
 source = .
+disable_warnings = include-ignored
 
 omit =
     */__init__.py
@@ -12,6 +13,14 @@ omit =
     */tests/*
     */admin.py
     */apps.py
+    */views.py
+    api/models.py
+
+include =
+    */entities/*
+    */services/*
+    */serializers/*
+    */views/*
 
 [report]
 show_missing = true
