@@ -1,6 +1,6 @@
 # Stationeryllis
 
-Back-end of the Stationery Store app made with Django REST Framework and Postgres.
+A REST API of a Stationery Store app made with Django REST Framework and Postgres.
 You can run this project locally or access the [Live Demo](http://stationeryllis.herokuapp.com/) hosted on Heroku using the credentials:
 
 -   User: guest
