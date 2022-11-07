@@ -1,3 +1,8 @@
+"""app views module"""
+
 from django.shortcuts import render
 
-# Create your views here.
+
+def home_view(request):
+    """Home View"""
+    return render(request, 'templates/app/index.html')
