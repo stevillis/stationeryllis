@@ -1,7 +1,9 @@
 # Stationeryllis
 
 An Stationery Store app made with Django, Postgres and React.
-You can run this project locally or access the [Live Demo](http://stationeryllis.herokuapp.com/) hosted on Heroku.
+You can run this project locally or access the [Live Demo](http://stationeryllis.herokuapp.com/) hosted on Heroku using the credentials: 
+- User: guest
+- Password: @stationeryllis
 
 ---
 
