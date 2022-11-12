@@ -1,6 +1,7 @@
 """Product views module"""
 
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,9 +15,13 @@ class ProductList(APIView):
     def get(self, request, format=None):
         """Get all Products View"""
         products = product_service.get_all_products()
-        serializer = ProductSerializer(instance=products, many=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        pagination = PageNumberPagination()
+        paginated_products = pagination.paginate_queryset(products, request)
+
+        serializer = ProductSerializer(instance=paginated_products, many=True)
+
+        return pagination.get_paginated_response(serializer.data)
 
     def post(self, request, format=None):
         """Create a Product View"""
