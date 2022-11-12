@@ -1,6 +1,7 @@
 """Customer views module"""
 
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,9 +15,16 @@ class CustomerList(APIView):
     def get(self, request, format=None):
         """Get all Customers View"""
         customers = customer_service.get_all_customers()
-        serializer = CustomerSerializer(instance=customers, many=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        pagination = PageNumberPagination()
+        paginated_customers = pagination.paginate_queryset(customers, request)
+
+        serializer = CustomerSerializer(
+            instance=paginated_customers,
+            many=True
+        )
+
+        return pagination.get_paginated_response(serializer.data)
 
     def post(self, request, format=None):
         """Create a Customer View"""

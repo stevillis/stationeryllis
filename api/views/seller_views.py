@@ -1,6 +1,7 @@
 """Seller views module"""
 
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,9 +15,13 @@ class SellerList(APIView):
     def get(self, request, format=None):
         """Get all Sellers View"""
         sellers = seller_service.get_all_sellers()
-        serializer = SellerSerializer(instance=sellers, many=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        pagination = PageNumberPagination()
+        paginated_sellers = pagination.paginate_queryset(sellers, request)
+
+        serializer = SellerSerializer(instance=paginated_sellers, many=True)
+
+        return pagination.get_paginated_response(serializer.data)
 
     def post(self, request, format=None):
         """Create a Seller View"""

@@ -25,13 +25,23 @@ class SellerViewsTestCase(APITestCase):
         )
 
         response = self.client.get(path=self.sellers_list_endpoint)
-        data = response.data[0]
+        data = response.data
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(data["name"], "Linda Bob")
-        self.assertEqual(data["email"], "lindabob@amazon.com")
-        self.assertEqual(data["phone"], "+1 415-387-3030")
+        with self.subTest("Response data should be paginated"):
+            self.assertIn("count", data)
+            self.assertIn("next", data)
+            self.assertIn("previous", data)
+            self.assertIn("results", data)
+
+        with self.subTest("Response data should be equal to the created product"):
+            results = data["results"]
+            result = results[0]
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(results), 1)
+            self.assertEqual(result["name"], "Linda Bob")
+            self.assertEqual(result["email"], "lindabob@amazon.com")
+            self.assertEqual(result["phone"], "+1 415-387-3030")
 
     def test_create_seller_with_valid_data(self):
         """Create Seller with valid data should return HTTP Created status code"""

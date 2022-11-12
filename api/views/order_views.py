@@ -3,6 +3,7 @@
 from typing import List, Union
 
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -60,9 +61,13 @@ class OrderList(APIView):
     def get(self, request, format=None):
         """Get all Orders View"""
         orders = order_service.get_all_orders()
-        serializer = OrderSerializer(instance=orders, many=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        pagination = PageNumberPagination()
+        paginated_orders = pagination.paginate_queryset(orders, request)
+
+        serializer = OrderSerializer(instance=paginated_orders, many=True)
+
+        return pagination.get_paginated_response(serializer.data)
 
     def post(self, request, format=None):
         """

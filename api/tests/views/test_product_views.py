@@ -27,14 +27,28 @@ class ProductViewsTestCase(APITestCase):
         )
 
         response = self.client.get(path=self.products_list_endpoint)
-        data = response.data[0]
+        data = response.data
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(data["description"], "Guaraná ralado")
-        self.assertEqual(Decimal(data["unit_price"]), round(Decimal(6.85), 2))
-        self.assertEqual(
-            Decimal(data["commission_percentage"]), round(Decimal(1.25), 2))
+        with self.subTest("Response data should be paginated"):
+            self.assertIn("count", data)
+            self.assertIn("next", data)
+            self.assertIn("previous", data)
+            self.assertIn("results", data)
+
+        with self.subTest("Response data should be equal to the created product"):
+            results = data["results"]
+            result = results[0]
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(len(results), 1)
+            self.assertEqual(result["description"], "Guaraná ralado")
+            self.assertEqual(
+                Decimal(result["unit_price"]),
+                round(Decimal(6.85), 2))
+            self.assertEqual(
+                Decimal(result["commission_percentage"]),
+                round(Decimal(1.25), 2)
+            )
 
     def test_create_product_with_valid_data(self):
         """Create Product with valid data should return HTTP Created status code"""
