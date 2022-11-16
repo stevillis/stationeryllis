@@ -1,5 +1,6 @@
 """Seller Views tests module."""
 
+from django.contrib.auth.models import User
 from django.urls import reverse
 from mixer.backend.django import mixer
 from rest_framework import status
@@ -14,6 +15,9 @@ class SellerViewsTestCase(APITestCase):
     def setUp(self) -> None:
         """Common data definitions"""
         self.sellers_list_endpoint = reverse("sellers-list")
+
+        user = User.objects.create_user('username', 'Pas$w0rd')
+        self.client.force_authenticate(user)
 
     def test_get_all_sellers(self):
         """Get all sellers endpoint should work as expected"""

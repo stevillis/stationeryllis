@@ -2,6 +2,7 @@
 
 from decimal import Decimal
 
+from django.contrib.auth.models import User
 from django.urls import reverse
 from mixer.backend.django import mixer
 from rest_framework import status
@@ -16,6 +17,9 @@ class ProductViewsTestCase(APITestCase):
     def setUp(self) -> None:
         """Common data definitions"""
         self.products_list_endpoint = reverse("products-list")
+
+        user = User.objects.create_user('username', 'Pas$w0rd')
+        self.client.force_authenticate(user)
 
     def test_get_all_products(self):
         """Get all products endpoint should work as expected"""
