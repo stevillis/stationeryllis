@@ -15,7 +15,7 @@ class CustomerSerializerTestCase(TestCase):
         self.customer_attributes = {
             "name": "John Kent",
             "email": "johnkent@gmail.com",
-            "phone": "+1 415-387-2249"
+            "phone": "+1 415-387-2249",
         }
 
         self.customer = Customer.objects.create(  # pylint: disable=no-member
@@ -30,8 +30,7 @@ class CustomerSerializerTestCase(TestCase):
         with self.subTest(
             "CustomerSerializer should have the exact attributes and data as expected"
         ):
-            self.assertCountEqual(
-                data.keys(), ["id", "name", "email", "phone"])
+            self.assertCountEqual(data.keys(), ["id", "name", "email", "phone"])
             self.assertEqual(data["name"], self.customer_attributes["name"])
             self.assertEqual(data["email"], self.customer_attributes["email"])
             self.assertEqual(data["phone"], self.customer_attributes["phone"])
@@ -52,15 +51,11 @@ class CustomerSerializerTestCase(TestCase):
         serializer_data = {
             "name": "Mary Wayne",
             "email": "marywayne@gmail.com",
-            "phone": "0800 720 5356"
+            "phone": "0800 720 5356",
         }
         with self.subTest("Test name field content with invalid data."):
             data = serializer_data.copy()
-            invalid_names = [
-                list((1, 2, 3)),
-                dict({"invalid": "name"}),
-                set([2, 4, 6])
-            ]
+            invalid_names = [list((1, 2, 3)), dict({"invalid": "name"}), set([2, 4, 6])]
 
             for invalid_name in invalid_names:
                 data["name"] = invalid_name
@@ -75,7 +70,7 @@ class CustomerSerializerTestCase(TestCase):
             invalid_emails = [
                 list((1, 2, 3)),
                 dict({"invalid": "email"}),
-                set([2, 4, 6])
+                set([2, 4, 6]),
             ]
 
             for invalid_email in invalid_emails:
@@ -91,7 +86,7 @@ class CustomerSerializerTestCase(TestCase):
             invalid_phones = [
                 list((1, 2, 3)),
                 dict({"invalid": "phone"}),
-                set([2, 4, 6])
+                set([2, 4, 6]),
             ]
 
             for invalid_phone in invalid_phones:

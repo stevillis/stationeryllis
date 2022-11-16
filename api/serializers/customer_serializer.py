@@ -7,7 +7,9 @@ from app.models import Customer
 
 class CustomerSerializer(serializers.ModelSerializer):
     """Customer serializer"""
+
     class Meta:
         """Meta definitions"""
+
         model = Customer
         fields = ("id", "name", "email", "phone")

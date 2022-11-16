@@ -1,10 +1,11 @@
 """Seller tests module."""
 
 
-from app.models import Seller
 from django.db.utils import IntegrityError
 from django.test import TransactionTestCase
 from mixer.backend.django import mixer
+
+from app.models import Seller
 
 
 class SellerTestCase(TransactionTestCase):
@@ -13,10 +14,7 @@ class SellerTestCase(TransactionTestCase):
     def test_create_model_with_valid_data(self):
         """Create model with valid data should work as expected."""
         seller = mixer.blend(
-            Seller,
-            name="Jane",
-            email="jane@example.com",
-            phone="11996685050"
+            Seller, name="Jane", email="jane@example.com", phone="11996685050"
         )
 
         self.assertEqual(seller.name, "Jane")
@@ -32,25 +30,19 @@ class SellerTestCase(TransactionTestCase):
         with self.subTest("Create Seller without name should raise exception."):
             with self.assertRaises(IntegrityError):
                 Seller.objects.create(  # pylint: disable=no-member
-                    name=None,
-                    email=valid_email,
-                    phone=valid_phone_number
+                    name=None, email=valid_email, phone=valid_phone_number
                 )
 
         with self.subTest("Create Seller without email should raise exception."):
             with self.assertRaises(IntegrityError):
                 Seller.objects.create(  # pylint: disable=no-member
-                    name=valid_name,
-                    email=None,
-                    phone=valid_phone_number
+                    name=valid_name, email=None, phone=valid_phone_number
                 )
 
         with self.subTest("Create Seller without email should raise exception."):
             with self.assertRaises(IntegrityError):
                 Seller.objects.create(  # pylint: disable=no-member
-                    name=valid_name,
-                    email="another_email@bol.com",
-                    phone=None
+                    name=valid_name, email="another_email@bol.com", phone=None
                 )
 
     def test_str_method(self):

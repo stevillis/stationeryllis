@@ -11,6 +11,7 @@ from api.services import seller_service
 
 class SellerList(GenericAPIView):
     """Non parameter dependent Views"""
+
     serializer_class = SellerSerializer
 
     def get(self, request, format=None):
@@ -37,6 +38,7 @@ class SellerList(GenericAPIView):
 
 class SellerDetail(GenericAPIView):
     """Parameter dependent Views"""
+
     serializer_class = SellerSerializer
 
     def get(self, request, pk, format=None):
@@ -49,10 +51,7 @@ class SellerDetail(GenericAPIView):
     def put(self, request, pk, format=None):
         """Update Seller data View"""
         old_seller = seller_service.get_seller_by_pk(pk)
-        serializer = SellerSerializer(
-            instance=old_seller,
-            data=request.data
-        )
+        serializer = SellerSerializer(instance=old_seller, data=request.data)
         if serializer.is_valid():
             serializer.save()
 

@@ -11,6 +11,7 @@ from api.services import product_service
 
 class ProductList(GenericAPIView):
     """Non parameter dependent Views"""
+
     serializer_class = ProductSerializer
 
     def get(self, request, format=None):
@@ -37,6 +38,7 @@ class ProductList(GenericAPIView):
 
 class ProductDetail(GenericAPIView):
     """Parameter dependent Views"""
+
     serializer_class = ProductSerializer
 
     def get(self, request, pk, format=None):
@@ -49,10 +51,7 @@ class ProductDetail(GenericAPIView):
     def put(self, request, pk, format=None):
         """Update Product data View"""
         old_product = product_service.get_product_by_pk(pk)
-        serializer = ProductSerializer(
-            instance=old_product,
-            data=request.data
-        )
+        serializer = ProductSerializer(instance=old_product, data=request.data)
         if serializer.is_valid():
             serializer.save()
 

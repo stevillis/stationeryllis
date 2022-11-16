@@ -21,7 +21,7 @@ def create_order(order: OrderEntity) -> None:
         datetime=order.datetime,
         invoice_number=order.invoice_number,
         customer=order.customer,
-        seller=order.seller
+        seller=order.seller,
     )
 
 

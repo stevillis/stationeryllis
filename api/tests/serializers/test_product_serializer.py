@@ -17,7 +17,7 @@ class ProductSerializerTestCase(TestCase):
         self.product_attributes = {
             "description": "Detergente",
             "unit_price": 2.19,
-            "commission_percentage": 1.5
+            "commission_percentage": 1.5,
         }
         self.decimal_places = 2
 
@@ -31,20 +31,16 @@ class ProductSerializerTestCase(TestCase):
         data = self.serializer.data
 
         self.assertCountEqual(
-            data.keys(),
-            ["id", "description", "unit_price", "commission_percentage"]
+            data.keys(), ["id", "description", "unit_price", "commission_percentage"]
         )
-        self.assertEqual(
-            data["description"],
-            self.product_attributes["description"]
-        )
+        self.assertEqual(data["description"], self.product_attributes["description"])
         self.assertEqual(
             round(Decimal(data["unit_price"]), 2),
-            round(Decimal(self.product_attributes["unit_price"]), 2)
+            round(Decimal(self.product_attributes["unit_price"]), 2),
         )
         self.assertEqual(
             round(Decimal(data["commission_percentage"]), 2),
-            round(Decimal(self.product_attributes["commission_percentage"]), 2)
+            round(Decimal(self.product_attributes["commission_percentage"]), 2),
         )
 
     def test_invalid_data(self):
@@ -52,14 +48,14 @@ class ProductSerializerTestCase(TestCase):
         serializer_data = {
             "description": "Goiaba",
             "unit_price": 23.59,
-            "commission_percentage": 0
+            "commission_percentage": 0,
         }
         with self.subTest("Test description field content with invalid data."):
             data = serializer_data.copy()
             invalid_names = [
                 list((1, 2, 3)),
                 dict({"invalid": "description"}),
-                set([2, 4, 6])
+                set([2, 4, 6]),
             ]
 
             for invalid_name in invalid_names:
@@ -75,7 +71,7 @@ class ProductSerializerTestCase(TestCase):
             invalid_unit_prices = [
                 list((1, 2, 3)),
                 dict({"invalid": "unit_price"}),
-                set([2, 4, 6])
+                set([2, 4, 6]),
             ]
 
             for invalid_unit_price in invalid_unit_prices:
@@ -86,12 +82,14 @@ class ProductSerializerTestCase(TestCase):
                 self.assertFalse(serializer.is_valid())
                 self.assertCountEqual(serializer.errors, ["unit_price"])
 
-        with self.subTest("Test commission_percentage field content with invalid data."):
+        with self.subTest(
+            "Test commission_percentage field content with invalid data."
+        ):
             data = serializer_data.copy()
             invalid_commission_percentages = [
                 list((1, 2, 3)),
                 dict({"invalid": "commission_percentage"}),
-                set([2, 4, 6])
+                set([2, 4, 6]),
             ]
 
             for invalid_commission_percentage in invalid_commission_percentages:
@@ -100,10 +98,7 @@ class ProductSerializerTestCase(TestCase):
                 serializer = ProductSerializer(data=data)
 
                 self.assertFalse(serializer.is_valid())
-                self.assertCountEqual(
-                    serializer.errors,
-                    ["commission_percentage"]
-                )
+                self.assertCountEqual(serializer.errors, ["commission_percentage"])
 
         with self.subTest("Negative unit_price shouldn't be valid."):
             data = serializer_data.copy()

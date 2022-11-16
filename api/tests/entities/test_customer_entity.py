@@ -11,9 +11,7 @@ class CustomerEntityTestCase(TestCase):
 
     def setUp(self) -> None:
         self.customer_entity = CustomerEntity(
-            name="Ana",
-            email="ana@gmail.com",
-            phone="(11) 98475-1515"
+            name="Ana", email="ana@gmail.com", phone="(11) 98475-1515"
         )
 
     def test_get_properties(self):

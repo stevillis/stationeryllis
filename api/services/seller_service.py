@@ -18,9 +18,7 @@ def get_all_sellers() -> QuerySet:
 def create_seller(seller: SellerEntity) -> None:
     """Create a Seller on the database"""
     Seller.objects.create(  # pylint: disable=no-member
-        name=seller.name,
-        email=seller.email,
-        phone=seller.phone
+        name=seller.name, email=seller.email, phone=seller.phone
     )
 
 
