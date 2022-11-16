@@ -3,8 +3,10 @@
 A REST API of a Stationery Store app made with Django REST Framework and Postgres.
 You can run this project locally or access the [Live Demo](http://stationeryllis.herokuapp.com/) hosted on Heroku using the credentials:
 
--   User: guest
--   Password: @stationeryllis
+- User: `guest`
+- Password: `@stationeryllis`
+
+To make request to the API endpoints hosted on Heroku you should set the `Authorization` Header to `Bearer 4ybyLzx3Gnrigeh4VhXknnB517L7NQ`. This token has 60d of expiration time. The sections bellow show you how to generate another token and you can use the [guest credentials](./guest_credentials.txt) if you decide to only perform request to the hosted API on Heroku instead of run the project locally.
 
 ### Entity Relationship Diagram
 
@@ -30,7 +32,7 @@ Once you have the repository locally, you also must [install Python](https://www
 You can use the virtual environment manager you like the most, but this project was developed by using [venv](https://docs.python.org/3/library/venv.html) module. After you create your virtualenv, install the project dependencies by using the command
 
 ```shell
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Postgres
@@ -46,19 +48,19 @@ It is also necessary to [install Postgres](https://www.postgresql.org/download/)
 2.  Create tables into the already created `stationeryllis` database
 
     ```shell
-    $ python manage.py migrate
+    python manage.py migrate
     ```
 
 3.  Create a superuser to access Django Admin
 
     ```shell
-    $ python manage.py createsuperuser
+    python manage.py createsuperuser
     ```
 
 4.  Start the local Django server
 
     ```shell
-    $ python manage.py runserver
+    python manage.py runserver
     ```
 
     and access the http://127.0.0.1:8000/ to see the available endpoints or access the Django Admin with the credentials you created in the previous steps.
@@ -72,52 +74,52 @@ It is also necessary to [install Postgres](https://www.postgresql.org/download/)
 
     5.2 Add a new Application in DJANGO OAUTH TOOLKIT app with the following values
 
-    -   Client id: let the auto generated value, but copy it to a secure place, since it will be necessary to create the API `access_token`
-    -   Client type: Confidential
-    -   Authorization grant type: Resource owner password-based
-    -   Client secret: Copy the auto generated secret and paste it in a secure place, since it will be necessary to create the API `access_token`
-    -   Name: Set the name of the application. This is the client you will use to communicate with the API, like [Postman](https://www.postman.com/downloads/) and [Insomnia](https://insomnia.rest/download), but you can set any name you want
-    -   Keep the other fields with their default value
+    - Client id: let the auto generated value, but copy it to a secure place, since it will be necessary to create the API `access_token`
+    - Client type: Confidential
+    - Authorization grant type: Resource owner password-based
+    - Client secret: Copy the auto generated secret and paste it in a secure place, since it will be necessary to create the API `access_token`
+    - Name: Set the name of the application. This is the client you will use to communicate with the API, like [Postman](https://www.postman.com/downloads/) and [Insomnia](https://insomnia.rest/download), but you can set any name you want
+    - Keep the other fields with their default value
 
-    5.3 Create the API `access_token` using the HTTP client you are familiar with (Postman, Insomnia or other)
+      5.3 Create the API `access_token` using the HTTP client you are familiar with (Postman, Insomnia or other)
 
-    -   Send a `POST` request to the endpoint `/oauth/token/` with the `body`:
+    - Send a `POST` request to the endpoint `/oauth/token/` with the `body`:
 
-        ```json
-        {
-            "grant_type": "password",
-            "client_id": "The Client id you copied in the previous step",
-            "client_secret": "The Client secret you copied in the previous step",
-            "username": "The username of user that you created in the step 3",
-            "password": "The password of user that you created in the step 3"
-        }
-        ```
+      ```json
+      {
+        "grant_type": "password",
+        "client_id": "The Client id you copied in the previous step",
+        "client_secret": "The Client secret you copied in the previous step",
+        "username": "The username of user that you created in the step 3",
+        "password": "The password of user that you created in the step 3"
+      }
+      ```
 
-        The response of this request will be something like
+      The response of this request will be something like
 
-        ```json
-        {
-            "access_token": "nXh3hPiYhaJTHW5yUmA1bg1pzrdXQR",
-            "expires_in": 60,
-            "token_type": "Bearer",
-            "scope": "read write",
-            "refresh_token": "GbpwmQUpKaZYzyQDO1wdCGjVJm8BFJ"
-        }
-        ```
+      ```json
+      {
+        "access_token": "nXh3hPiYhaJTHW5yUmA1bg1pzrdXQR",
+        "expires_in": 60,
+        "token_type": "Bearer",
+        "scope": "read write",
+        "refresh_token": "GbpwmQUpKaZYzyQDO1wdCGjVJm8BFJ"
+      }
+      ```
 
-    -   For any endpoint, except `/api/users/`, you must send an access token for all requests, setting the `Authorization` value to `Bearer THE_CREATED_ACCESS_TOKEN` in the request `Headers`.
+    - For any endpoint, except `/api/users/`, you must send an access token for all requests, setting the `Authorization` value to `Bearer THE_CREATED_ACCESS_TOKEN` in the request `Headers`.
 
-    -   Using the previous created access token, the `Headers` would have the value
-        `Authorization: Bearer nXh3hPiYhaJTHW5yUmA1bg1pzrdXQR`
+    - Using the previous created access token, the `Headers` would have the value
+      `Authorization: Bearer nXh3hPiYhaJTHW5yUmA1bg1pzrdXQR`
 
-    5.4 If the access token have expired, you can use the `refresh_token` to create another `access_token` by sending a `POST` request to `/oauth/token/` with the `body`:
+      5.4 If the access token have expired, you can use the `refresh_token` to create another `access_token` by sending a `POST` request to `/oauth/token/` with the `body`:
 
     ```json
     {
-        "grant_type": "refresh_token",
-        "client_id": "The Client id you copied before",
-        "client_secret": "The Client secret you copied before",
-        "refresh_token": "The refresh_token returned in the response of access_token creation"
+      "grant_type": "refresh_token",
+      "client_id": "The Client id you copied before",
+      "client_secret": "The Client secret you copied before",
+      "refresh_token": "The refresh_token returned in the response of access_token creation"
     }
     ```
 
@@ -127,9 +129,9 @@ It is also necessary to [install Postgres](https://www.postgresql.org/download/)
 
     The difference here is the way you have to set the Bearer Token:
 
-    -   Click on the `Authorize` button
-    -   Set the `Value` to `Bearer THE_CREATED_ACCESS_TOKEN`
-    -   Click on the `Authorize` button and then `Close`
+    - Click on the `Authorize` button
+    - Set the `Value` to `Bearer THE_CREATED_ACCESS_TOKEN`
+    - Click on the `Authorize` button and then `Close`
 
     Now you are able to make requests to all endpoints, without having to set the Bearer Token again until it expires (30 days by default).
 
@@ -142,7 +144,7 @@ It is also necessary to [install Postgres](https://www.postgresql.org/download/)
 You can also run the tests by installing the dev dependencies (you must have the database configured as explained in the previous section)
 
 ```shell
-$ pip install -r requirements_dev.txt
+pip install -r requirements_dev.txt
 ```
 
 and then running the command
