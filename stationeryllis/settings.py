@@ -38,7 +38,10 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 if not IS_HEROKU:
     DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", ]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -58,7 +61,7 @@ INSTALLED_APPS_DJANGO = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles"
+    "django.contrib.staticfiles",
 ]
 
 INSTALLED_APPS_ROOT = [
@@ -72,14 +75,14 @@ INSTALLED_APPS_3RD_PARTY = [
     "drf_spectacular",
 ]
 
-INSTALLED_APPS_3RD_PARTY_BEFORE_DJANGO_APPS = [
+INSTALLED_APPS_3RD_PARTY_BEFORE_DJANGO_APPS = []
 
-]
-
-INSTALLED_APPS = INSTALLED_APPS_3RD_PARTY_BEFORE_DJANGO_APPS + \
-    INSTALLED_APPS_DJANGO + \
-    INSTALLED_APPS_3RD_PARTY + \
-    INSTALLED_APPS_ROOT
+INSTALLED_APPS = (
+    INSTALLED_APPS_3RD_PARTY_BEFORE_DJANGO_APPS
+    + INSTALLED_APPS_DJANGO
+    + INSTALLED_APPS_3RD_PARTY
+    + INSTALLED_APPS_ROOT
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -183,21 +186,17 @@ REST_FRAMEWORK = {
     # Pagination
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
-
     # Authentication
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
     ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated"
-    ],
-
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 OAUTH2_PROVIDER = {
     "ACCESS_TOKEN_EXPIRE_SECONDS": 2592000,  # 30 days
-    "OAUTH2_BACKEND_CLASS": "oauth2_provider.oauth2_backends.JSONOAuthLibCore"
+    "OAUTH2_BACKEND_CLASS": "oauth2_provider.oauth2_backends.JSONOAuthLibCore",
 }
 
 SPECTACULAR_SETTINGS = {
@@ -205,16 +204,15 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "A REST API of a Stationery Store app made with Django REST Framework and Postgres.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-
     "COMPONENT_SPLIT_REQUEST": True,
     "APPEND_COMPONENTS": {
         "securitySchemes": {
-            "ApiKeyAuth": {
-                "type": "apiKey",
-                "in": "header",
-                "name": "Authorization"
-            }
+            "ApiKeyAuth": {"type": "apiKey", "in": "header", "name": "Authorization"}
         }
     },
-    "SECURITY": [{"ApiKeyAuth": [], }],
+    "SECURITY": [
+        {
+            "ApiKeyAuth": [],
+        }
+    ],
 }

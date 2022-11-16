@@ -24,26 +24,16 @@ def _validate_request_data_valid(data) -> Union[bool, List]:
     """
     errors = {"detail": []}
     if not data.get("order"):
-        errors["detail"].append(
-            {
-                "order": "Missing `order`"
-            }
-        )
+        errors["detail"].append({"order": "Missing `order`"})
 
     if not data.get("products"):
-        errors["detail"].append(
-            {
-                "products": "Missing `products`"
-            }
-        )
+        errors["detail"].append({"products": "Missing `products`"})
 
     for index, product in enumerate(data.get("products")):
         quantity = product.get("quantity")
         if not quantity:
             errors["detail"].append(
-                {
-                    "quantity": f"Missing `quantity` in `products` at index #{index}"
-                }
+                {"quantity": f"Missing `quantity` in `products` at index #{index}"}
             )
 
         product_id = product.get("id")
@@ -57,6 +47,7 @@ def _validate_request_data_valid(data) -> Union[bool, List]:
 
 class OrderList(GenericAPIView):
     """Non parameter dependent Views"""
+
     serializer_class = OrderSerializer
 
     def get(self, request, format=None):
@@ -111,7 +102,7 @@ class OrderList(GenericAPIView):
                     order_item_service.create_order_item(
                         order_id=order_db.id,
                         product_id=product["id"],
-                        quantity=product["quantity"]
+                        quantity=product["quantity"],
                     )
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -123,6 +114,7 @@ class OrderList(GenericAPIView):
 
 class OrderDetail(GenericAPIView):
     """Parameter dependent Views"""
+
     serializer_class = OrderSerializer
 
     def get(self, request, pk, format=None):
@@ -143,17 +135,12 @@ class OrderDetail(GenericAPIView):
             order = data["order"]
             products = data["products"]
 
-            serializer = OrderSerializer(
-                instance=old_order,
-                data=order
-            )
+            serializer = OrderSerializer(instance=old_order, data=order)
             if serializer.is_valid():
                 order_db = serializer.save()
                 order_db.refresh_from_db()
 
-                order_items = order_item_service.get_order_items_by_order(
-                    order_db
-                )
+                order_items = order_item_service.get_order_items_by_order(order_db)
 
                 # Remove product items
                 for order_item in order_items:
@@ -163,11 +150,13 @@ class OrderDetail(GenericAPIView):
                 # Add product items
                 for product in products:
                     product_id = product["id"]
-                    if product_id not in [product_id for order_item.product_id in order_items]:
+                    if product_id not in [
+                        product_id for order_item.product_id in order_items
+                    ]:
                         order_item_service.create_order_item(
                             order_id=order_db.id,
                             product_id=product_id,
-                            quantity=product["quantity"]
+                            quantity=product["quantity"],
                         )
 
                 return Response(serializer.data, status=status.HTTP_200_OK)

@@ -11,6 +11,7 @@ from api.services import customer_service
 
 class CustomerList(GenericAPIView):
     """Non parameter dependent Views"""
+
     serializer_class = CustomerSerializer
 
     def get(self, request, format=None):
@@ -21,8 +22,7 @@ class CustomerList(GenericAPIView):
         paginated_customers = pagination.paginate_queryset(customers, request)
 
         serializer = CustomerSerializer(
-            instance=paginated_customers,
-            many=True
+            instance=paginated_customers, many=True, context={"request": request}
         )
 
         return pagination.get_paginated_response(serializer.data)
@@ -40,6 +40,7 @@ class CustomerList(GenericAPIView):
 
 class CustomerDetail(GenericAPIView):
     """Parameter dependent Views"""
+
     serializer_class = CustomerSerializer
 
     def get(self, request, pk, format=None):
@@ -52,10 +53,7 @@ class CustomerDetail(GenericAPIView):
     def put(self, request, pk, format=None):
         """Update Customer data View"""
         old_customer = customer_service.get_customer_by_pk(pk)
-        serializer = CustomerSerializer(
-            instance=old_customer,
-            data=request.data
-        )
+        serializer = CustomerSerializer(instance=old_customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
 

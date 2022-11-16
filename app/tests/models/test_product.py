@@ -19,7 +19,7 @@ class ProductTestCase(TransactionTestCase):
             Product,
             description="Bolacha de Água e Sal",
             unit_price=Decimal(2.6),
-            commission_percentage=Decimal(2.75)
+            commission_percentage=Decimal(2.75),
         )
 
         self.assertEqual(product.description, "Bolacha de Água e Sal")
@@ -37,7 +37,7 @@ class ProductTestCase(TransactionTestCase):
                 Product.objects.create(  # pylint: disable=no-member
                     description=None,
                     unit_price=valid_unit_price,
-                    commission_percentage=valid_commission_percentage
+                    commission_percentage=valid_commission_percentage,
                 )
 
         with self.subTest("Create Product without unit_price should raise exception."):
@@ -45,31 +45,37 @@ class ProductTestCase(TransactionTestCase):
                 Product.objects.create(  # pylint: disable=no-member
                     description=valid_description,
                     unit_price=None,
-                    commission_percentage=valid_commission_percentage
+                    commission_percentage=valid_commission_percentage,
                 )
 
-        with self.subTest("Create Product without commission_percentage should raise exception."):
+        with self.subTest(
+            "Create Product without commission_percentage should raise exception."
+        ):
             with self.assertRaises(IntegrityError):
                 Product.objects.create(  # pylint: disable=no-member
                     description=valid_description,
                     unit_price=valid_unit_price,
-                    commission_percentage=None
+                    commission_percentage=None,
                 )
 
-        with self.subTest("Create Product with unit_price negative should raise exception."):
+        with self.subTest(
+            "Create Product with unit_price negative should raise exception."
+        ):
             with self.assertRaises(IntegrityError):
                 Product.objects.create(  # pylint: disable=no-member
                     description=valid_description,
                     unit_price=-1.87,
-                    commission_percentage=valid_commission_percentage
+                    commission_percentage=valid_commission_percentage,
                 )
 
-        with self.subTest("Create Product with commission_percentage negative should raise exception."):
+        with self.subTest(
+            "Create Product with commission_percentage negative should raise exception."
+        ):
             with self.assertRaises(IntegrityError):
                 Product.objects.create(  # pylint: disable=no-member
                     description=valid_description,
                     unit_price=valid_unit_price,
-                    commission_percentage=-2
+                    commission_percentage=-2,
                 )
 
     def test_str_method(self):
@@ -78,6 +84,6 @@ class ProductTestCase(TransactionTestCase):
             Product,
             description="Batata Frita",
             unit_price=4.45,
-            commission_percentage=1
+            commission_percentage=1,
         )
         self.assertEqual(str(product), "Batata Frita")

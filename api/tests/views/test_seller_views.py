@@ -16,7 +16,7 @@ class SellerViewsTestCase(APITestCase):
         """Common data definitions"""
         self.sellers_list_endpoint = reverse("sellers-list")
 
-        user = User.objects.create_user('username', 'Pas$w0rd')
+        user = User.objects.create_user("username", "Pas$w0rd")
         self.client.force_authenticate(user)
 
     def test_get_all_sellers(self):
@@ -25,7 +25,7 @@ class SellerViewsTestCase(APITestCase):
             Seller,
             name="Linda Bob",
             email="lindabob@amazon.com",
-            phone="+1 415-387-3030"
+            phone="+1 415-387-3030",
         )
 
         response = self.client.get(path=self.sellers_list_endpoint)
@@ -52,12 +52,11 @@ class SellerViewsTestCase(APITestCase):
         sample_seller_with_valid_data = {
             "name": "Kamila Leal",
             "email": "kamileal@gmail.com",
-            "phone": "19 3615-1573"
+            "phone": "19 3615-1573",
         }
 
         response = self.client.post(
-            path=self.sellers_list_endpoint,
-            data=sample_seller_with_valid_data
+            path=self.sellers_list_endpoint, data=sample_seller_with_valid_data
         )
         data = response.data
 
@@ -73,11 +72,10 @@ class SellerViewsTestCase(APITestCase):
             sample_seller_with_invalid_name = {
                 "name": "",
                 "email": "jeremysimon@gmail.com",
-                "phone": "19 3615-1573"
+                "phone": "19 3615-1573",
             }
             response = self.client.post(
-                path=self.sellers_list_endpoint,
-                data=sample_seller_with_invalid_name
+                path=self.sellers_list_endpoint, data=sample_seller_with_invalid_name
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -87,11 +85,10 @@ class SellerViewsTestCase(APITestCase):
             sample_seller_with_invalid_name = {
                 "name": "Jeremy Simon",
                 "email": "",
-                "phone": "19 3615-1573"
+                "phone": "19 3615-1573",
             }
             response = self.client.post(
-                path=self.sellers_list_endpoint,
-                data=sample_seller_with_invalid_name
+                path=self.sellers_list_endpoint, data=sample_seller_with_invalid_name
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -101,11 +98,10 @@ class SellerViewsTestCase(APITestCase):
             sample_seller_with_invalid_name = {
                 "name": "",
                 "email": "jeremysimon@gmail.com",
-                "phone": "19 3615-1573"
+                "phone": "19 3615-1573",
             }
             response = self.client.post(
-                path=self.sellers_list_endpoint,
-                data=sample_seller_with_invalid_name
+                path=self.sellers_list_endpoint, data=sample_seller_with_invalid_name
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -115,11 +111,10 @@ class SellerViewsTestCase(APITestCase):
             sample_seller_with_invalid_name = {
                 "name": "Jeremy Simon",
                 "email": "jeremysimon@gmail.com",
-                "phone": ""
+                "phone": "",
             }
             response = self.client.post(
-                path=self.sellers_list_endpoint,
-                data=sample_seller_with_invalid_name
+                path=self.sellers_list_endpoint, data=sample_seller_with_invalid_name
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -129,21 +124,18 @@ class SellerViewsTestCase(APITestCase):
             sample_seller = {
                 "name": "Jeremy Simon",
                 "email": "jeremysimon@gmail.com",
-                "phone": "19 3615-1573"
+                "phone": "19 3615-1573",
             }
             sample_seller_with_duplicated_email = {
                 "name": "Jeremy Simon Patson",
                 "email": "jeremysimon@gmail.com",
-                "phone": "21 98455-6301"
+                "phone": "21 98455-6301",
             }
 
-            self.client.post(
-                path=self.sellers_list_endpoint,
-                data=sample_seller
-            )
+            self.client.post(path=self.sellers_list_endpoint, data=sample_seller)
             response = self.client.post(
                 path=self.sellers_list_endpoint,
-                data=sample_seller_with_duplicated_email
+                data=sample_seller_with_duplicated_email,
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -155,11 +147,10 @@ class SellerViewsTestCase(APITestCase):
             Seller,
             name="Danger Bob",
             email="danger_bob@gmail.com",
-            phone="+1 415-387-3054"
+            phone="+1 415-387-3054",
         )
         sellers_detail_endpoint = reverse(
-            viewname="sellers-detail",
-            kwargs={"pk": new_seller.pk}
+            viewname="sellers-detail", kwargs={"pk": new_seller.pk}
         )
 
         response = self.client.get(sellers_detail_endpoint)
@@ -173,8 +164,7 @@ class SellerViewsTestCase(APITestCase):
     def test_get_non_existing_seller_by_pk(self):
         """Get a non existing Seller should return HTTP Not Found status code"""
         non_existing_seller_endpoint = reverse(
-            viewname="sellers-detail",
-            kwargs={"pk": 99999999}
+            viewname="sellers-detail", kwargs={"pk": 99999999}
         )
 
         response = self.client.get(non_existing_seller_endpoint)
@@ -184,24 +174,19 @@ class SellerViewsTestCase(APITestCase):
     def test_update_seller_with_valid_data(self):
         """Test update Seller endpoint with valid data"""
         seller = mixer.blend(
-            Seller,
-            name="Bafabon",
-            email="bafabon@gmail.com",
-            phone="99 99654-8521"
+            Seller, name="Bafabon", email="bafabon@gmail.com", phone="99 99654-8521"
         )
         sellers_detail_endpoint = reverse(
-            viewname="sellers-detail",
-            kwargs={"pk": seller.pk}
+            viewname="sellers-detail", kwargs={"pk": seller.pk}
         )
         seller_updated_data = {
             "name": "Linda",
             "email": "linda@gmail.com",
-            "phone": "99 99654-8521"
+            "phone": "99 99654-8521",
         }
 
         response = self.client.put(
-            path=sellers_detail_endpoint,
-            data=seller_updated_data
+            path=sellers_detail_endpoint, data=seller_updated_data
         )
         data = response.data
 
@@ -213,25 +198,20 @@ class SellerViewsTestCase(APITestCase):
     def test_update_seller_with_invalid_data(self):
         """Update Seller with invalid data should return HTTP Bad Request status code"""
         seller = mixer.blend(
-            Seller,
-            name="Colonel",
-            email="colonel@gmail.com",
-            phone="11 3624-2400"
+            Seller, name="Colonel", email="colonel@gmail.com", phone="11 3624-2400"
         )
         sellers_detail_endpoint = reverse(
-            viewname="sellers-detail",
-            kwargs={"pk": seller.pk}
+            viewname="sellers-detail", kwargs={"pk": seller.pk}
         )
 
         with self.subTest("Update Seller with empty name"):
             seller_updated_data_with_empty_name = {
                 "name": "",
                 "email": "linda@gmail.com",
-                "phone": "99 99654-8521"
+                "phone": "99 99654-8521",
             }
             response = self.client.put(
-                path=sellers_detail_endpoint,
-                data=seller_updated_data_with_empty_name
+                path=sellers_detail_endpoint, data=seller_updated_data_with_empty_name
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -241,11 +221,10 @@ class SellerViewsTestCase(APITestCase):
             seller_updated_data_with_empty_email = {
                 "name": "Linda",
                 "email": "",
-                "phone": "99 99654-8521"
+                "phone": "99 99654-8521",
             }
             response = self.client.put(
-                path=sellers_detail_endpoint,
-                data=seller_updated_data_with_empty_email
+                path=sellers_detail_endpoint, data=seller_updated_data_with_empty_email
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -255,31 +234,25 @@ class SellerViewsTestCase(APITestCase):
             seller_updated_data_with_empty_phone = {
                 "name": "Linda",
                 "email": "linda@gmail.com",
-                "phone": ""
+                "phone": "",
             }
             response = self.client.put(
-                path=sellers_detail_endpoint,
-                data=seller_updated_data_with_empty_phone
+                path=sellers_detail_endpoint, data=seller_updated_data_with_empty_phone
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
             self.assertIn("phone", response.data.keys())
 
         with self.subTest("Update Seller with duplicated email"):
-            mixer.blend(
-                Seller,
-                name="Nyang",
-                email="nyang@gmail.com",
-                phone="123"
-            )
+            mixer.blend(Seller, name="Nyang", email="nyang@gmail.com", phone="123")
             seller_updated_data_with_duplicated_email = {
                 "name": "Linda",
                 "email": "nyang@gmail.com",
-                "phone": "99 99654-8521"
+                "phone": "99 99654-8521",
             }
             response = self.client.put(
                 path=sellers_detail_endpoint,
-                data=seller_updated_data_with_duplicated_email
+                data=seller_updated_data_with_duplicated_email,
             )
 
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -288,41 +261,33 @@ class SellerViewsTestCase(APITestCase):
     def test_update_non_existing_seller(self):
         """Update a non existing Seller should return HTTP Not Found status code"""
         non_existing_seller_endpoint = reverse(
-            viewname="sellers-detail",
-            kwargs={"pk": 99999999}
+            viewname="sellers-detail", kwargs={"pk": 99999999}
         )
-        seller_data = {
-            "name": "Lorem",
-            "email": "ipsum@gmail.com",
-            "phone": "123456"
-        }
+        seller_data = {"name": "Lorem", "email": "ipsum@gmail.com", "phone": "123456"}
 
-        response = self.client.put(
-            path=non_existing_seller_endpoint,
-            data=seller_data
-        )
+        response = self.client.put(path=non_existing_seller_endpoint, data=seller_data)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_seller(self):
         """Test delete Seller endpoint"""
         seller = mixer.blend(
-            Seller,
-            name="Jane Foster",
-            email="fosterjane@gmail.com",
-            phone="1"
+            Seller, name="Jane Foster", email="fosterjane@gmail.com", phone="1"
         )
         sellers_detail_endpoint = reverse(
-            viewname="sellers-detail",
-            kwargs={"pk": seller.pk}
+            viewname="sellers-detail", kwargs={"pk": seller.pk}
         )
 
-        with self.subTest("Delete existing Seller should return HTTP No Content status code"):
+        with self.subTest(
+            "Delete existing Seller should return HTTP No Content status code"
+        ):
             response = self.client.delete(sellers_detail_endpoint)
 
             self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        with self.subTest("Delete non existing Seller should return HTTP Not Found status code"):
+        with self.subTest(
+            "Delete non existing Seller should return HTTP Not Found status code"
+        ):
             response = self.client.delete(sellers_detail_endpoint)
 
             self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

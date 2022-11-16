@@ -20,7 +20,7 @@ def create_product(product: ProductEntity) -> None:
     Product.objects.create(  # pylint: disable=no-member
         description=product.description,
         unit_price=product.unit_price,
-        commission_percentage=product.commission_percentage
+        commission_percentage=product.commission_percentage,
     )
 
 

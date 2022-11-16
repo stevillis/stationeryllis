@@ -13,10 +13,7 @@ class DayOfTheWeekTestCase(TestCase):
 
     def test_create_model_with_valid_data(self):
         """Create model with valid data should work as expected."""
-        day_of_the_week = mixer.blend(
-            DayOfTheWeek,
-            description="Saturday"
-        )
+        day_of_the_week = mixer.blend(DayOfTheWeek, description="Saturday")
 
         self.assertEqual(day_of_the_week.description, "Saturday")
 
@@ -25,26 +22,17 @@ class DayOfTheWeekTestCase(TestCase):
 
         too_long_description = "Lorem ipsum dolor sit amet consectetur."
         with self.assertRaises(DataError):
-            mixer.blend(
-                DayOfTheWeek,
-                description=too_long_description
-            )
+            mixer.blend(DayOfTheWeek, description=too_long_description)
 
     def test_create_model_with_duplicate_description(self):
         """
         Create model with duplicate description should raise integrity
         error.
         """
-        mixer.blend(
-            DayOfTheWeek,
-            description="Sunday"
-        )
+        mixer.blend(DayOfTheWeek, description="Sunday")
 
         with self.assertRaises(IntegrityError):
-            mixer.blend(
-                DayOfTheWeek,
-                description="Sunday"
-            )
+            mixer.blend(DayOfTheWeek, description="Sunday")
 
     def test_str_method(self):
         """Test str method of Model."""

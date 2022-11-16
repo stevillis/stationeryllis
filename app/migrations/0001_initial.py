@@ -15,9 +15,10 @@ def migrate_day_of_the_week(apps, schema_editor):
         "Sexta-feira",
         "Sábado",
         "Domingo",
-        ]
+    ]
     for day in days_of_the_week:
         DayOfTheWeek.objects.create(description=day)
+
 
 class Migration(migrations.Migration):
 
