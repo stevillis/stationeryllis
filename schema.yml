@@ -1,0 +1,742 @@
+openapi: 3.0.3
+info:
+  title: Stationeryllis API
+  version: 1.0.0
+  description: A REST API of a Stationery Store app made with Django REST Framework
+    and Postgres.
+paths:
+  /api/customers/:
+    get:
+      operationId: api_customers_retrieve
+      description: Get all Customers View
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          description: ''
+    post:
+      operationId: api_customers_create
+      description: Create a Customer View
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          description: ''
+  /api/customers/{id}:
+    get:
+      operationId: api_customers_retrieve_2
+      description: Get a Customer by pk View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          description: ''
+    put:
+      operationId: api_customers_update
+      description: Update Customer data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+          description: ''
+    delete:
+      operationId: api_customers_destroy
+      description: Delete Customer data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/orders/:
+    get:
+      operationId: api_orders_retrieve
+      description: Get all Orders View
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    post:
+      operationId: api_orders_create
+      description: |-
+        Create a Order View.
+
+        A sample of the body expected is:
+        >>> {
+            "order": {
+                "datetime": "2022-11-06T16:15:39.318891-04:00",
+                "ivoice_number": "10001001",
+                "customer": 1,
+                "seller": 2
+            },
+            "products" [
+                {
+                    "id": 1,
+                    "quantity": 4
+                },
+                {
+                    "id": 2,
+                    "quantity": 9
+                },
+            ]
+        }
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/orders/{id}:
+    get:
+      operationId: api_orders_retrieve_2
+      description: Get a Order by pk View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: api_orders_update
+      description: Update Order data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    delete:
+      operationId: api_orders_destroy
+      description: Delete Order data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/products/:
+    get:
+      operationId: api_products_retrieve
+      description: Get all Products View
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    post:
+      operationId: api_products_create
+      description: Create a Product View
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/products/{id}:
+    get:
+      operationId: api_products_retrieve_2
+      description: Get a Product by pk View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: api_products_update
+      description: Update Product data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: api_products_destroy
+      description: Delete Product data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/sellers/:
+    get:
+      operationId: api_sellers_retrieve
+      description: Get all Sellers View
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Seller'
+          description: ''
+    post:
+      operationId: api_sellers_create
+      description: Create a Seller View
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SellerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SellerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SellerRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Seller'
+          description: ''
+  /api/sellers/{id}:
+    get:
+      operationId: api_sellers_retrieve_2
+      description: Get a Seller by pk View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Seller'
+          description: ''
+    put:
+      operationId: api_sellers_update
+      description: Update Seller data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SellerRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SellerRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SellerRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Seller'
+          description: ''
+    delete:
+      operationId: api_sellers_destroy
+      description: Delete Seller data View
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/users/:
+    post:
+      operationId: api_users_create
+      description: Create a User View
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - ApiKeyAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+components:
+  schemas:
+    Customer:
+      type: object
+      description: Customer serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Nome
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          title: E-mail
+          maxLength: 254
+        phone:
+          type: string
+          title: Telefone
+          maxLength: 100
+      required:
+      - email
+      - id
+      - name
+      - phone
+    CustomerRequest:
+      type: object
+      description: Customer serializer
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nome
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          minLength: 1
+          title: E-mail
+          maxLength: 254
+        phone:
+          type: string
+          minLength: 1
+          title: Telefone
+          maxLength: 100
+      required:
+      - email
+      - name
+      - phone
+    Order:
+      type: object
+      description: Order serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        datetime:
+          type: string
+          format: date-time
+          title: Data/hora
+        invoice_number:
+          type: string
+          title: Número da nota fiscal
+          maxLength: 8
+        customer:
+          type: integer
+          title: Cliente
+        seller:
+          type: integer
+          title: Vendedor
+      required:
+      - customer
+      - datetime
+      - id
+      - invoice_number
+      - seller
+    OrderRequest:
+      type: object
+      description: Order serializer
+      properties:
+        datetime:
+          type: string
+          format: date-time
+          title: Data/hora
+        invoice_number:
+          type: string
+          minLength: 1
+          title: Número da nota fiscal
+          maxLength: 8
+        customer:
+          type: integer
+          title: Cliente
+        seller:
+          type: integer
+          title: Vendedor
+      required:
+      - customer
+      - datetime
+      - invoice_number
+      - seller
+    Product:
+      type: object
+      description: Product serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        description:
+          type: string
+          title: Descrição
+          maxLength: 100
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          title: Valor unitário
+        commission_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          title: Percentual de comissão
+      required:
+      - commission_percentage
+      - description
+      - id
+      - unit_price
+    ProductRequest:
+      type: object
+      description: Product serializer
+      properties:
+        description:
+          type: string
+          minLength: 1
+          title: Descrição
+          maxLength: 100
+        unit_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          title: Valor unitário
+        commission_percentage:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          title: Percentual de comissão
+      required:
+      - commission_percentage
+      - description
+      - unit_price
+    Seller:
+      type: object
+      description: Seller serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Nome
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          title: E-mail
+          maxLength: 254
+        phone:
+          type: string
+          title: Telefone
+          maxLength: 100
+      required:
+      - email
+      - id
+      - name
+      - phone
+    SellerRequest:
+      type: object
+      description: Seller serializer
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Nome
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          minLength: 1
+          title: E-mail
+          maxLength: 254
+        phone:
+          type: string
+          minLength: 1
+          title: Telefone
+          maxLength: 100
+      required:
+      - email
+      - name
+      - phone
+    User:
+      type: object
+      description: User serializer
+      properties:
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          title: Senha
+          maxLength: 128
+      required:
+      - password
+      - username
+    UserRequest:
+      type: object
+      description: User serializer
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          minLength: 1
+          title: Senha
+          maxLength: 128
+      required:
+      - password
+      - username
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+    oauth2:
+      type: oauth2
+      flows: {}

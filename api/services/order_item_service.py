@@ -18,23 +18,27 @@ def get_all_order_items() -> QuerySet:
 def create_order_item(order_id, product_id, quantity) -> None:
     """Create a OrderItem on the database"""
     OrderItem.objects.create(  # pylint: disable=no-member
-        order_id=order_id,
-        product_id=product_id,
-        quantity=quantity
+        order_id=order_id, product_id=product_id, quantity=quantity
     )
 
 
-def get_order_item_by_pk(pk) -> Union[OrderItem, Http404]:  # pylint: disable=invalid-name
+def get_order_item_by_pk(
+    pk,
+) -> Union[OrderItem, Http404]:  # pylint: disable=invalid-name
     """Get a OrderItem by pk"""
     return get_object_or_404(OrderItem, pk=pk)
 
 
-def get_order_items_by_order(order) -> Union[QuerySet, Http404]:  # pylint: disable=invalid-name
+def get_order_items_by_order(
+    order,
+) -> Union[QuerySet, Http404]:  # pylint: disable=invalid-name
     """Get OrderItem objects that match order"""
     return OrderItem.objects.filter(order=order)  # pylint: disable=no-member
-    
 
-def update_order_item(old_order_item: OrderItemEntity, new_order_item: OrderItemEntity) -> None:
+
+def update_order_item(
+    old_order_item: OrderItemEntity, new_order_item: OrderItemEntity
+) -> None:
     """Update OrderItem data on the database"""
     old_order_item.order = new_order_item.order
     old_order_item.product = new_order_item.product

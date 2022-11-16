@@ -15,15 +15,12 @@ class ProductEntityTestCase(TestCase):
         self.product_entity = ProductEntity(
             description="Bolacha de Água e Sal",
             unit_price=Decimal(4.45),
-            commission_percentage=Decimal(1)
+            commission_percentage=Decimal(1),
         )
 
     def test_get_properties(self):
         """ProductEntity instance should return its properties as expected"""
-        self.assertEqual(
-            self.product_entity.description,
-            "Bolacha de Água e Sal"
-        )
+        self.assertEqual(self.product_entity.description, "Bolacha de Água e Sal")
         self.assertEqual(self.product_entity.unit_price, Decimal(4.45))
         self.assertEqual(self.product_entity.commission_percentage, Decimal(1))
 
@@ -40,7 +37,4 @@ class ProductEntityTestCase(TestCase):
 
         with self.subTest("Set commission_percentage should work as expected"):
             self.product_entity.commission_percentage = Decimal(2)
-            self.assertEqual(
-                self.product_entity.commission_percentage,
-                Decimal(2)
-            )
+            self.assertEqual(self.product_entity.commission_percentage, Decimal(2))

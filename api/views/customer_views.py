@@ -1,16 +1,18 @@
 """Customer views module"""
 
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.serializers.customer_serializer import CustomerSerializer
 from api.services import customer_service
 
 
-class CustomerList(APIView):
+class CustomerList(GenericAPIView):
     """Non parameter dependent Views"""
+
+    serializer_class = CustomerSerializer
 
     def get(self, request, format=None):
         """Get all Customers View"""
@@ -20,8 +22,7 @@ class CustomerList(APIView):
         paginated_customers = pagination.paginate_queryset(customers, request)
 
         serializer = CustomerSerializer(
-            instance=paginated_customers,
-            many=True
+            instance=paginated_customers, many=True, context={"request": request}
         )
 
         return pagination.get_paginated_response(serializer.data)
@@ -37,8 +38,10 @@ class CustomerList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomerDetail(APIView):
+class CustomerDetail(GenericAPIView):
     """Parameter dependent Views"""
+
+    serializer_class = CustomerSerializer
 
     def get(self, request, pk, format=None):
         """Get a Customer by pk View"""
@@ -50,10 +53,7 @@ class CustomerDetail(APIView):
     def put(self, request, pk, format=None):
         """Update Customer data View"""
         old_customer = customer_service.get_customer_by_pk(pk)
-        serializer = CustomerSerializer(
-            instance=old_customer,
-            data=request.data
-        )
+        serializer = CustomerSerializer(instance=old_customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
 

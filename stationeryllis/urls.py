@@ -19,7 +19,8 @@ from django.urls import include, path
 from app.views import home_view
 
 urlpatterns = [
+    path("", home_view, name="home"),
+    path("api/", include("api.urls")),
     path("admin/", admin.site.urls),
-    path("api/", include('api.urls')),
-    path("", home_view, name="home")
+    path("oauth/", include("oauth2_provider.urls", namespace="oauth2_provider")),
 ]

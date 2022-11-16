@@ -1,10 +1,11 @@
 """Customer tests module."""
 
 
-from app.models import Customer
 from django.db.utils import IntegrityError
 from django.test import TransactionTestCase
 from mixer.backend.django import mixer
+
+from app.models import Customer
 
 
 class CustomerTestCase(TransactionTestCase):
@@ -13,10 +14,7 @@ class CustomerTestCase(TransactionTestCase):
     def test_create_model_with_valid_data(self):
         """Create model with valid data should work as expected."""
         customer = mixer.blend(
-            Customer,
-            name="Jane",
-            email="jane@example.com",
-            phone="11996685050"
+            Customer, name="Jane", email="jane@example.com", phone="11996685050"
         )
 
         self.assertEqual(customer.name, "Jane")
@@ -32,25 +30,19 @@ class CustomerTestCase(TransactionTestCase):
         with self.subTest("Create Customer without name should raise exception."):
             with self.assertRaises(IntegrityError):
                 Customer.objects.create(  # pylint: disable=no-member
-                    name=None,
-                    email=valid_email,
-                    phone=valid_phone_number
+                    name=None, email=valid_email, phone=valid_phone_number
                 )
 
         with self.subTest("Create Customer without email should raise exception."):
             with self.assertRaises(IntegrityError):
                 Customer.objects.create(  # pylint: disable=no-member
-                    name=valid_name,
-                    email=None,
-                    phone=valid_phone_number
+                    name=valid_name, email=None, phone=valid_phone_number
                 )
 
         with self.subTest("Create Customer without email should raise exception."):
             with self.assertRaises(IntegrityError):
                 Customer.objects.create(  # pylint: disable=no-member
-                    name=valid_name,
-                    email="another_email@bol.com",
-                    phone=None
+                    name=valid_name, email="another_email@bol.com", phone=None
                 )
 
     def test_str_method(self):

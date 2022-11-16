@@ -18,9 +18,7 @@ def get_all_customers() -> QuerySet:
 def create_customer(customer: CustomerEntity) -> None:
     """Create a Customer on the database"""
     Customer.objects.create(  # pylint: disable=no-member
-        name=customer.name,
-        email=customer.email,
-        phone=customer.phone
+        name=customer.name, email=customer.email, phone=customer.phone
     )
 
 

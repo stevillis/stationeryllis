@@ -1,16 +1,18 @@
 """Product views module"""
 
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.serializers.product_serializer import ProductSerializer
 from api.services import product_service
 
 
-class ProductList(APIView):
+class ProductList(GenericAPIView):
     """Non parameter dependent Views"""
+
+    serializer_class = ProductSerializer
 
     def get(self, request, format=None):
         """Get all Products View"""
@@ -19,7 +21,9 @@ class ProductList(APIView):
         pagination = PageNumberPagination()
         paginated_products = pagination.paginate_queryset(products, request)
 
-        serializer = ProductSerializer(instance=paginated_products, many=True)
+        serializer = ProductSerializer(
+            instance=paginated_products, many=True, context={"request", request}
+        )
 
         return pagination.get_paginated_response(serializer.data)
 
@@ -34,8 +38,10 @@ class ProductList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProductDetail(APIView):
+class ProductDetail(GenericAPIView):
     """Parameter dependent Views"""
+
+    serializer_class = ProductSerializer
 
     def get(self, request, pk, format=None):
         """Get a Product by pk View"""
@@ -47,10 +53,7 @@ class ProductDetail(APIView):
     def put(self, request, pk, format=None):
         """Update Product data View"""
         old_product = product_service.get_product_by_pk(pk)
-        serializer = ProductSerializer(
-            instance=old_product,
-            data=request.data
-        )
+        serializer = ProductSerializer(instance=old_product, data=request.data)
         if serializer.is_valid():
             serializer.save()
 

@@ -61,5 +61,5 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
-        migrations.RunPython(migrate_day_of_the_week)
+        migrations.RunPython(migrate_day_of_the_week),
     ]
