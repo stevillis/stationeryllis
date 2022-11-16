@@ -1,16 +1,17 @@
 """Product views module"""
 
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.serializers.product_serializer import ProductSerializer
 from api.services import product_service
 
 
-class ProductList(APIView):
+class ProductList(GenericAPIView):
     """Non parameter dependent Views"""
+    serializer_class = ProductSerializer
 
     def get(self, request, format=None):
         """Get all Products View"""
@@ -34,8 +35,9 @@ class ProductList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProductDetail(APIView):
+class ProductDetail(GenericAPIView):
     """Parameter dependent Views"""
+    serializer_class = ProductSerializer
 
     def get(self, request, pk, format=None):
         """Get a Product by pk View"""

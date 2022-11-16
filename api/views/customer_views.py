@@ -1,16 +1,17 @@
 """Customer views module"""
 
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.serializers.customer_serializer import CustomerSerializer
 from api.services import customer_service
 
 
-class CustomerList(APIView):
+class CustomerList(GenericAPIView):
     """Non parameter dependent Views"""
+    serializer_class = CustomerSerializer
 
     def get(self, request, format=None):
         """Get all Customers View"""
@@ -37,8 +38,9 @@ class CustomerList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomerDetail(APIView):
+class CustomerDetail(GenericAPIView):
     """Parameter dependent Views"""
+    serializer_class = CustomerSerializer
 
     def get(self, request, pk, format=None):
         """Get a Customer by pk View"""

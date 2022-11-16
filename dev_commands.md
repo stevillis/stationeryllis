@@ -75,3 +75,11 @@ Access html report
 ```shell
 python -m http.server 8080
 ```
+
+## Swagger
+
+Generate schema
+
+```shell
+python manage.py spectacular --file schema.yml
+```
