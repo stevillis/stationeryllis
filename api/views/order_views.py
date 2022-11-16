@@ -3,9 +3,9 @@
 from typing import List, Union
 
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.serializers.order_serializer import OrderSerializer
 from api.services import order_item_service, order_service, product_service
@@ -55,8 +55,9 @@ def _validate_request_data_valid(data) -> Union[bool, List]:
     return True, []
 
 
-class OrderList(APIView):
+class OrderList(GenericAPIView):
     """Non parameter dependent Views"""
+    serializer_class = OrderSerializer
 
     def get(self, request, format=None):
         """Get all Orders View"""
@@ -120,8 +121,9 @@ class OrderList(APIView):
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class OrderDetail(APIView):
+class OrderDetail(GenericAPIView):
     """Parameter dependent Views"""
+    serializer_class = OrderSerializer
 
     def get(self, request, pk, format=None):
         """Get a Order by pk View"""
