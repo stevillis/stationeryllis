@@ -43,19 +43,19 @@ python manage.py test --keepdb --failfast
 Run all specific app tests
 
 ```shell
-coverage run --source='.' manage.py test app --keepdb
+coverage run --source='.' manage.py test app --keepdb --failfast
 ```
 
 Run specific test module
 
 ```shell
-coverage run --source='.' manage.py test api.tests.serializers.test_seller_serializer --keepdb
+coverage run --source='.' manage.py test api.tests.serializers.test_seller_serializer --keepdb --failfast
 ```
 
 Run all app's tests
 
 ```shell
-coverage run --source='.' manage.py test . --keepdb
+coverage run --source='.' manage.py test . --keepdb --failfast
 ```
 
 Generate report

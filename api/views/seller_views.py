@@ -21,7 +21,9 @@ class SellerList(GenericAPIView):
         pagination = PageNumberPagination()
         paginated_sellers = pagination.paginate_queryset(sellers, request)
 
-        serializer = SellerSerializer(instance=paginated_sellers, many=True)
+        serializer = SellerSerializer(
+            instance=paginated_sellers, many=True, context={"request": request}
+        )
 
         return pagination.get_paginated_response(serializer.data)
 

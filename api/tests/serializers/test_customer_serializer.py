@@ -18,9 +18,9 @@ class CustomerSerializerTestCase(TestCase):
             "phone": "+1 415-387-2249",
         }
 
-        self.customer = Customer.objects.create(  # pylint: disable=no-member
+        self.customer = Customer.objects.create(
             **self.customer_attributes
-        )
+        )  # pylint: disable=no-member
         self.serializer = CustomerSerializer(instance=self.customer)
 
     def test_valid_data(self):
@@ -30,7 +30,9 @@ class CustomerSerializerTestCase(TestCase):
         with self.subTest(
             "CustomerSerializer should have the exact attributes and data as expected"
         ):
-            self.assertCountEqual(data.keys(), ["id", "name", "email", "phone"])
+            self.assertCountEqual(
+                data.keys(), ["id", "name", "email", "phone", "endpoints"]
+            )
             self.assertEqual(data["name"], self.customer_attributes["name"])
             self.assertEqual(data["email"], self.customer_attributes["email"])
             self.assertEqual(data["phone"], self.customer_attributes["phone"])

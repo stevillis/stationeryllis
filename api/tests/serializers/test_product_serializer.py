@@ -21,9 +21,9 @@ class ProductSerializerTestCase(TestCase):
         }
         self.decimal_places = 2
 
-        self.product = Product.objects.create(  # pylint: disable=no-member
+        self.product = Product.objects.create(
             **self.product_attributes
-        )
+        )  # pylint: disable=no-member
         self.serializer = ProductSerializer(instance=self.product)
 
     def test_valid_data(self):
@@ -31,7 +31,8 @@ class ProductSerializerTestCase(TestCase):
         data = self.serializer.data
 
         self.assertCountEqual(
-            data.keys(), ["id", "description", "unit_price", "commission_percentage"]
+            data.keys(),
+            ["id", "description", "unit_price", "commission_percentage", "endpoints"],
         )
         self.assertEqual(data["description"], self.product_attributes["description"])
         self.assertEqual(

@@ -13,7 +13,9 @@ class CustomerTestCase(TransactionTestCase):
 
     def test_create_model_with_valid_data(self):
         """Create model with valid data should work as expected."""
-        customer = mixer.blend(Customer, name="Jane", email="jane@example.com", phone="11996685050")
+        customer = mixer.blend(
+            Customer, name="Jane", email="jane@example.com", phone="11996685050"
+        )
 
         self.assertEqual(customer.name, "Jane")
         self.assertEqual(customer.email, "jane@example.com")
